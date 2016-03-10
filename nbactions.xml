@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+	<action>
+		<actionName>CUSTOM-(re)start derby</actionName>
+		<displayName>(re)start derby</displayName>
+		<goals>
+			<goal>derby:stop</goal>
+			<goal>derby:drop-db</goal>
+			<goal>derby:run</goal>
+		</goals>
+	</action>
+</actions>
