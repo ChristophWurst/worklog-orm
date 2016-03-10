@@ -1,4 +1,4 @@
-package swt6.orm.domain.annotated;
+package swt6.orm.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;

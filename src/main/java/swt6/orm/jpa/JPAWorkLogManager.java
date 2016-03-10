@@ -6,12 +6,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import swt6.orm.domain.annotated.Address;
-import swt6.orm.domain.annotated.Employee;
-import swt6.orm.domain.annotated.LogbookEntry;
-import swt6.orm.domain.annotated.PermanentEmployee;
-import swt6.orm.domain.annotated.Project;
-import swt6.orm.domain.annotated.TemporaryEmployee;
+import swt6.orm.domain.Address;
+import swt6.orm.domain.Employee;
+import swt6.orm.domain.LogbookEntry;
+import swt6.orm.domain.PermanentEmployee;
+import swt6.orm.domain.Project;
+import swt6.orm.domain.TemporaryEmployee;
 import swt6.util.DateUtil;
 
 public class JPAWorkLogManager {
