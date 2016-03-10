@@ -1,4 +1,4 @@
-package swt6.orm.jpa;
+package at.christophwurst.orm.consoleclient;
 
 import java.text.DateFormat;
 import java.util.List;
@@ -6,13 +6,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import swt6.orm.domain.Address;
-import swt6.orm.domain.Employee;
-import swt6.orm.domain.LogbookEntry;
-import swt6.orm.domain.PermanentEmployee;
-import swt6.orm.domain.Project;
-import swt6.orm.domain.TemporaryEmployee;
-import swt6.util.DateUtil;
+import at.christophwurst.orm.domain.Address;
+import at.christophwurst.orm.domain.Employee;
+import at.christophwurst.orm.domain.LogbookEntry;
+import at.christophwurst.orm.domain.PermanentEmployee;
+import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.TemporaryEmployee;
+import at.christophwurst.orm.util.DateUtil;
 
 public class JPAWorkLogManager {
 

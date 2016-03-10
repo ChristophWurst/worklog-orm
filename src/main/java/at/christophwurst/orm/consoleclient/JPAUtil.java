@@ -1,4 +1,4 @@
-package swt6.orm.jpa;
+package at.christophwurst.orm.consoleclient;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

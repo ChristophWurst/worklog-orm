@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package swt6.orm.dao;
+package at.christophwurst.orm.dao;
 
 import java.util.List;
-import swt6.orm.domain.Employee;
+import at.christophwurst.orm.domain.Employee;
 
 /**
  *

@@ -1,4 +1,4 @@
-package swt6.orm.domain;
+package at.christophwurst.orm.domain;
 
 import java.text.DateFormat;
 import java.util.Date;

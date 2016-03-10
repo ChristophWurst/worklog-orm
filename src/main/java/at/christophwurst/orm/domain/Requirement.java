@@ -1,4 +1,4 @@
-package swt6.orm.domain;
+package at.christophwurst.orm.domain;
 
 import com.sun.istack.internal.Nullable;
 import java.io.Serializable;

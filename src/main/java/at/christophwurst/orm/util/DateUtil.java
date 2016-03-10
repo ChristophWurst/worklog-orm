@@ -1,4 +1,4 @@
-package swt6.util;
+package at.christophwurst.orm.util;
 
 import java.util.Date;
 import java.util.Calendar;
