@@ -5,24 +5,25 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Sprint implements Serializable {
 
 	public Sprint() {
 	}
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
+	
+	private Date startDate;
+	private Date endDate;
 
 	public Long getId() {
 		return id;
@@ -31,9 +32,6 @@ public class Sprint implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	private Date startDate;
-	private Date endDate;
 
 	public Date getStartDate() {
 		return startDate;
@@ -62,7 +60,7 @@ public class Sprint implements Serializable {
 		this.project = project;
 	}
 
-	@ManyToMany
+	@OneToMany
 	private Set<Requirement> requirements = new HashSet<>();
 
 	public Set<Requirement> getRequirements() {

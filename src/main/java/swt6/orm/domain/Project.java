@@ -27,6 +27,12 @@ public class Project implements Serializable {
 	@ManyToMany
 	private Set<Employee> employees = new HashSet<>();
 
+	@OneToMany(mappedBy = "project")
+	private Set<Sprint> sprints = new HashSet<>();
+
+	@OneToMany(mappedBy = "project")
+	private Set<Requirement> requirements = new HashSet<>();
+
 	public Project() {
 	}
 
@@ -71,9 +77,6 @@ public class Project implements Serializable {
 		return getName();
 	}
 
-	@OneToMany(mappedBy = "project")
-	private Set<Sprint> sprints = new HashSet<>();
-
 	public Set<Sprint> getSprints() {
 		return sprints;
 	}
@@ -81,9 +84,6 @@ public class Project implements Serializable {
 	public void setSprints(Set<Sprint> sprints) {
 		this.sprints = sprints;
 	}
-
-	@OneToMany(mappedBy = "project")
-	private Set<Requirement> requirements = new HashSet<>();
 
 	public Set<Requirement> getRequirements() {
 		return requirements;

@@ -1,10 +1,11 @@
 package swt6.orm.domain;
 
+import com.sun.istack.internal.Nullable;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,7 +62,7 @@ public class Requirement implements Serializable {
 		this.longDesc = longDesc;
 	}
 
-	@ManyToOne
+	@ManyToOne(optional = true)
 	private Sprint sprint;
 
 	public Sprint getSprint() {

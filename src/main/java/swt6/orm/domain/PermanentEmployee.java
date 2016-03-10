@@ -2,7 +2,6 @@ package swt6.orm.domain;
 
 import java.util.Date;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity

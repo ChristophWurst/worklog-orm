@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.OneToOne;
 
 // Version2
 //@Embeddable
@@ -23,6 +23,7 @@ public class Address implements Serializable {
 
 //	@Transient
 	private String street;
+	@OneToOne(mappedBy = "address")
 	private Employee employee;
 
 	public Address() {
