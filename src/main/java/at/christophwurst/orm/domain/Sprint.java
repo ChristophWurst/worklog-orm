@@ -17,11 +17,17 @@ public class Sprint implements Serializable {
 
 	public Sprint() {
 	}
-	
+
+	public Sprint(int nr) {
+		this.nr = nr;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
+
+	private int nr;
+
 	private Date startDate;
 	private Date endDate;
 
@@ -31,6 +37,14 @@ public class Sprint implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getNr() {
+		return nr;
+	}
+
+	public void setNr(int nr) {
+		this.nr = nr;
 	}
 
 	public Date getStartDate() {

@@ -16,7 +16,10 @@ import javax.persistence.OneToMany;
 
 @Entity
 @NamedEntityGraph(name = "graph.Project.logbookEntries",
-	attributeNodes = @NamedAttributeNode(value = "requirements", subgraph = "reqGraph"),
+	attributeNodes = {
+		@NamedAttributeNode(value = "requirements", subgraph = "reqGraph"),
+		@NamedAttributeNode(value = "sprints")
+	},
 	subgraphs = {
 		@NamedSubgraph(name = "reqGraph", attributeNodes = @NamedAttributeNode(value = "tasks", subgraph = "taskGraph")),
 		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries", subgraph = "emplGraph")),
@@ -34,7 +37,7 @@ public class Project implements Serializable {
 	@ManyToMany
 	private Set<Employee> employees = new HashSet<>();
 
-	@OneToMany(mappedBy = "project")
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	private Set<Sprint> sprints = new HashSet<>();
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
@@ -79,8 +82,8 @@ public class Project implements Serializable {
 		this.employees.add(empl);
 	}
 
-	//@Overrid
-	public String toStrings() {
+	@Override
+	public String toString() {
 		return getName();
 	}
 
@@ -90,6 +93,14 @@ public class Project implements Serializable {
 
 	public void setSprints(Set<Sprint> sprints) {
 		this.sprints = sprints;
+	}
+	
+	public void addSprint(Sprint sprint) {
+		if (sprint.getProject() != null) {
+			sprint.getProject().getSprints().remove(sprint);
+		}
+		sprints.add(sprint);
+		sprint.setProject(this);
 	}
 
 	public Set<Requirement> getRequirements() {

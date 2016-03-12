@@ -14,21 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.dao;
+package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.util.JPAUtil;
-import javax.persistence.EntityManager;
+import at.christophwurst.orm.domain.Employee;
+import at.christophwurst.orm.domain.Project;
+import java.util.Map;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-abstract class Dao<T> {
+public interface StatisticsService {
 
-	public void save(T t) {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		em.persist(t);
-		JPAUtil.commit();
-	}
+	public Map<Project, Map<Employee, Long>> getTimeOnProjectPerEmployee();
 
 }

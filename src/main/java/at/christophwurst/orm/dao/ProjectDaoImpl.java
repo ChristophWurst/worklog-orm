@@ -26,7 +26,7 @@ import java.util.Set;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 
-public class ProjectDaoImpl implements ProjectDao {
+class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public List<Project> getAll() {

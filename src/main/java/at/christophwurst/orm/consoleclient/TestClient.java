@@ -23,11 +23,14 @@ import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
 import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.domain.Task;
+import at.christophwurst.orm.service.ServiceContainer;
+import at.christophwurst.orm.service.StatisticsService;
 import at.christophwurst.orm.util.DateUtil;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -40,10 +43,12 @@ public class TestClient {
 		new TestClient().run();
 	}
 
+	private final StatisticsService statisticsService;
 	private final EmployeeDao employeeDao;
 	private final ProjectDao projectDao;
 
 	public TestClient() {
+		statisticsService = ServiceContainer.getStatisticsService();
 		employeeDao = DatabaseFactory.getEmployeeDao();
 		projectDao = DatabaseFactory.getProjectDao();
 	}
@@ -72,11 +77,11 @@ public class TestClient {
 		tasks.add(t131);
 		tasks.forEach((Task t) -> {
 			Random r = new Random();
-			LogbookEntry lbe1 = new LogbookEntry("Design modules", DateUtil.getTime(8, 0), DateUtil.getTime(9, 0));
+			LogbookEntry lbe1 = new LogbookEntry("Design modules", DateUtil.getTime(2015, 12, 14, 8, 0), DateUtil.getTime(2015, 12, 14, 9, 0));
 			lbe1.setEmployee(empls.get(r.nextInt(empls.size())));
-			LogbookEntry lbe2 = new LogbookEntry("Design interfaces", DateUtil.getTime(9, 0), DateUtil.getTime(10, 0));
+			LogbookEntry lbe2 = new LogbookEntry("Design interfaces", DateUtil.getTime(2015, 12, 14, 9, 0), DateUtil.getTime(2015, 12, 14, 10, 0));
 			lbe2.setEmployee(empls.get(r.nextInt(empls.size())));
-			LogbookEntry lbe3 = new LogbookEntry("Document interfaces", DateUtil.getTime(10, 0), DateUtil.getTime(11, 0));
+			LogbookEntry lbe3 = new LogbookEntry("Document interfaces", DateUtil.getTime(2015, 12, 14, 10, 0), DateUtil.getTime(2015, 12, 14, 11, 0));
 			lbe3.setEmployee(empls.get(r.nextInt(empls.size())));
 			t.addLogbookEntry(lbe1);
 			t.addLogbookEntry(lbe2);
@@ -90,12 +95,18 @@ public class TestClient {
 		r13.addTask(t131);
 
 		Project p1 = new Project("Project A");
+		p1.addSprint(new Sprint(1));
+		p1.addSprint(new Sprint(2));
+		p1.addSprint(new Sprint(3));
 		p1.addMember(e1);
 		p1.addMember(e2);
 		p1.addRequirement(r11);
 		p1.addRequirement(r12);
 		p1.addRequirement(r13);
 		Project p2 = new Project("Project B");
+		p2.addSprint(new Sprint(1));
+		p2.addSprint(new Sprint(2));
+		p2.addSprint(new Sprint(3));
 		p2.addMember(e2);
 
 		projectDao.save(p1);
@@ -103,24 +114,11 @@ public class TestClient {
 	}
 
 	private void showEmployeeTimePerProject() {
-		List<Project> projects = projectDao.getProjectsAndLogbookEntries();
-		System.out.println("# Projects (" + projects.size() + ")");
-		projects.stream().map((p) -> {
-			System.out.println("  - Project: " + p);
-			return p;
-		}).forEach((Project p) -> {
-			p.getRequirements().stream().map((Requirement req) -> {
-				System.out.println("    - " + req);
-				return req;
-			}).forEach((Requirement req) -> {
-				req.getTasks().stream().map((Task tsk) -> {
-					System.out.println("      - " + tsk);
-					return tsk;
-				}).forEach((Task tsk) -> {
-					tsk.getLogbookEntries().stream().forEach((entry) -> {
-						System.out.println("        - " + entry);
-					});
-				});
+		statisticsService.getTimeOnProjectPerEmployee().forEach((Project p, Map<Employee, Long> stat) -> {
+			System.out.println("# Project " + p);
+			stat.forEach((Employee e, Long time) -> {
+				long hours = time / (1000 * 3600);
+				System.out.println("  - " + e + ": " + hours + "h");
 			});
 		});
 	}
@@ -131,7 +129,6 @@ public class TestClient {
 		prepareData();
 
 		showEmployeeTimePerProject();
-
 	}
 
 }

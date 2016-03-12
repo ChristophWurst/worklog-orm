@@ -14,21 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.dao;
+package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.util.JPAUtil;
-import javax.persistence.EntityManager;
+import at.christophwurst.orm.dao.DatabaseFactory;
+import at.christophwurst.orm.dao.ProjectDao;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-abstract class Dao<T> {
+public class ServiceContainer {
 
-	public void save(T t) {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		em.persist(t);
-		JPAUtil.commit();
+	private static ProjectDao projectDao;
+
+	static {
+		projectDao = DatabaseFactory.getProjectDao();
+	}
+
+	public static StatisticsService getStatisticsService() {
+		return new StatisticsServiceImpl(projectDao);
 	}
 
 }

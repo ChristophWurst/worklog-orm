@@ -24,14 +24,17 @@ public class LogbookEntry implements Serializable {
 	private Long id;
 	private String activity;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date startTime;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date endTime;
 
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = false)
 	private Employee employee;
+
+	@ManyToOne
+	private Task task;
 
 	public LogbookEntry() {
 	}
@@ -74,6 +77,10 @@ public class LogbookEntry implements Serializable {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
+	
+	public long getTotalTime() {
+		return endTime.getTime() - startTime.getTime();
+	}
 
 	public Employee getEmployee() {
 		return employee;
@@ -96,21 +103,18 @@ public class LogbookEntry implements Serializable {
 		this.employee.getLogbookEntries().add(this);
 	}
 
-	@Override
-	public String toString() {
-		DateFormat fmt = DateFormat.getDateTimeInstance();
-		return activity + ": " + fmt.format(startTime) + " - " + fmt.format(endTime) + "(" + (getEmployee() != null ? getEmployee().getLastName() : "NONE") + ")";
-	}
-
-	@ManyToOne
-	private Task task;
-
 	public Task getTask() {
 		return task;
 	}
 
 	public void setTask(Task task) {
 		this.task = task;
+	}
+
+	@Override
+	public String toString() {
+		DateFormat fmt = DateFormat.getDateTimeInstance();
+		return activity + ": " + fmt.format(startTime) + " - " + fmt.format(endTime) + "(" + (getEmployee() != null ? getEmployee().getLastName() : "NONE") + ")";
 	}
 
 }
