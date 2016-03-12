@@ -73,6 +73,13 @@
 			<version>${derby.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.ninja-squad</groupId>
+			<artifactId>DbSetup</artifactId>
+			<version>1.6.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>

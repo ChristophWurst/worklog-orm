@@ -22,8 +22,16 @@ package at.christophwurst.orm.dao;
  */
 public class DatabaseFactory {
 
-	static EmployeeDao getEmployeeDao() {
+	public static EmployeeDao getEmployeeDao() {
 		return new EmployeeDaoImpl();
+	}
+
+	public static ProjectDao getProjectDao() {
+		return new ProjectDaoImpl();
+	}
+
+	public static RequirementDao getRequirementDao() {
+		return new RequirementDaoImpl();
 	}
 
 }

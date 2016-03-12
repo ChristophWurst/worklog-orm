@@ -16,19 +16,44 @@
  */
 package at.christophwurst.orm.dao;
 
-import java.util.List;
 import at.christophwurst.orm.domain.Employee;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface EmployeeDao {
+public class EmployeeDaoImplTest extends DaoTest {
 
-	public List<Employee> getAll();
+	private EmployeeDaoImpl dao;
 
-	public Employee getById(Long id);
+	@Before
+	@Override
+	public void setUp() {
+		super.setUp();
+		dao = new EmployeeDaoImpl();
+	}
 
-	public void save(Employee employee);
+	@Test
+	public void getAll() {
+		dao.getAll();
+	}
 
+	@Test
+	public void getById() {
+		Long id = 1234L;
+
+		Employee e = dao.getById(id);
+
+		assertNotNull(e);
+	}
+
+	@Test
+	public void getByIdNotFound() {
+		Employee e = dao.getById(3000L);
+
+		assertNull(e);
+	}
 }

@@ -16,19 +16,21 @@
  */
 package at.christophwurst.orm.dao;
 
+import at.christophwurst.orm.domain.Project;
 import java.util.List;
-import at.christophwurst.orm.domain.Employee;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface EmployeeDao {
+public interface ProjectDao {
 
-	public List<Employee> getAll();
+	public List<Project> getAll();
+	
+	public List<Project> getProjectsAndLogbookEntries();
 
-	public Employee getById(Long id);
+	public Project getById(Long id);
 
-	public void save(Employee employee);
+	public void save(Project p);
 
 }

@@ -16,19 +16,19 @@
  */
 package at.christophwurst.orm.dao;
 
-import java.util.List;
-import at.christophwurst.orm.domain.Employee;
+import at.christophwurst.orm.util.JPAUtil;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface EmployeeDao {
+public abstract class Dao<T> {
 
-	public List<Employee> getAll();
-
-	public Employee getById(Long id);
-
-	public void save(Employee employee);
+	public void save(T t) {
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		em.persist(t);
+		JPAUtil.commit();
+	}
 
 }

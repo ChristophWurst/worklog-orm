@@ -3,18 +3,25 @@ package at.christophwurst.orm.domain;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 
 @Entity
+@NamedEntityGraph(name = "graph.Project.logbookEntries",
+	attributeNodes = @NamedAttributeNode(value = "requirements", subgraph = "reqGraph"),
+	subgraphs = {
+		@NamedSubgraph(name = "reqGraph", attributeNodes = @NamedAttributeNode(value = "tasks", subgraph = "taskGraph")),
+		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries", subgraph = "emplGraph")),
+		@NamedSubgraph(name = "emplGrah", attributeNodes = @NamedAttributeNode(value = "employee"))
+	})
 public class Project implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,7 +37,7 @@ public class Project implements Serializable {
 	@OneToMany(mappedBy = "project")
 	private Set<Sprint> sprints = new HashSet<>();
 
-	@OneToMany(mappedBy = "project")
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	private Set<Requirement> requirements = new HashSet<>();
 
 	public Project() {
@@ -72,8 +79,8 @@ public class Project implements Serializable {
 		this.employees.add(empl);
 	}
 
-	@Override
-	public String toString() {
+	//@Overrid
+	public String toStrings() {
 		return getName();
 	}
 
@@ -91,6 +98,14 @@ public class Project implements Serializable {
 
 	public void setRequirements(Set<Requirement> requirements) {
 		this.requirements = requirements;
+	}
+	
+	public void addRequirement(Requirement requirement) {
+		if (requirement.getProject() != null) {
+			requirement.getProject().getRequirements().remove(requirement);
+		}
+		requirements.add(requirement);
+		requirement.setProject(this);
 	}
 
 }

@@ -16,8 +16,10 @@
  */
 package at.christophwurst.orm.dao;
 
+import at.christophwurst.orm.util.JPAUtil;
 import java.util.List;
 import at.christophwurst.orm.domain.Employee;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -27,12 +29,25 @@ class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public List<Employee> getAll() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		List<Employee> empls = em.createQuery("from Employee", Employee.class).getResultList();
+		JPAUtil.commit();
+		return empls;
 	}
 
 	@Override
 	public Employee getById(Long id) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		Employee empl = em.find(Employee.class, id);
+		JPAUtil.commit();
+		return empl;
 	}
-	
+
+	@Override
+	public void save(Employee employee) {
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		em.persist(employee);
+		JPAUtil.commit();
+	}
+
 }

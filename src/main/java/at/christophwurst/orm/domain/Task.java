@@ -3,10 +3,10 @@ package at.christophwurst.orm.domain;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -14,18 +14,26 @@ import javax.persistence.OneToMany;
 @Entity
 public class Task implements Serializable {
 
-	public Task() {
-	}
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	private Long id;
 
 	private String shortDescription;
-
 	private String description;
+	private int estimatedTime;
+	
+	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+	private Set<LogbookEntry> logbookEntries = new HashSet<>();
+	
+	@ManyToOne
+	private Requirement requirement;
 
-	private int estCost;
+	public Task() {
+	}
+
+	public Task(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
 
 	public Long getId() {
 		return id;
@@ -51,16 +59,13 @@ public class Task implements Serializable {
 		this.description = longDesc;
 	}
 
-	public int getEstCost() {
-		return estCost;
+	public int getEstimatedTime() {
+		return estimatedTime;
 	}
 
-	public void setEstCost(int estCost) {
-		this.estCost = estCost;
+	public void setEstimatedTime(int estCost) {
+		this.estimatedTime = estCost;
 	}
-
-	@OneToMany(mappedBy = "task")
-	private Set<LogbookEntry> logbookEntries = new HashSet<>();
 
 	public Set<LogbookEntry> getLogbookEntries() {
 		return logbookEntries;
@@ -69,9 +74,14 @@ public class Task implements Serializable {
 	public void setLogbookEntries(Set<LogbookEntry> logbookEntries) {
 		this.logbookEntries = logbookEntries;
 	}
-
-	@ManyToOne
-	private Requirement requirement;
+	
+	public void addLogbookEntry(LogbookEntry entry) {
+		if (entry.getTask() != null) {
+			entry.getTask().getLogbookEntries().remove(entry);
+		}
+		logbookEntries.add(entry);
+		entry.setTask(this);
+	}
 
 	public Requirement getRequirement() {
 		return requirement;

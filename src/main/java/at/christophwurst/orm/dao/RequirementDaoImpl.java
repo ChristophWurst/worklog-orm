@@ -16,19 +16,9 @@
  */
 package at.christophwurst.orm.dao;
 
-import java.util.List;
-import at.christophwurst.orm.domain.Employee;
+import at.christophwurst.orm.domain.Requirement;
 
-/**
- *
- * @author Christoph Wurst <christoph@winzerhof-wurst.at>
- */
-public interface EmployeeDao {
 
-	public List<Employee> getAll();
-
-	public Employee getById(Long id);
-
-	public void save(Employee employee);
+public class RequirementDaoImpl extends Dao<Requirement> implements RequirementDao {
 
 }

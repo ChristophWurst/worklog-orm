@@ -16,19 +16,19 @@
  */
 package at.christophwurst.orm.dao;
 
-import java.util.List;
-import at.christophwurst.orm.domain.Employee;
+import static com.ninja_squad.dbsetup.Operations.*;
+import com.ninja_squad.dbsetup.operation.Operation;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface EmployeeDao {
+public class DbOperations {
 
-	public List<Employee> getAll();
-
-	public Employee getById(Long id);
-
-	public void save(Employee employee);
-
+	public static final Operation PREPARE_DB = sequenceOf(
+		deleteAllFrom("Address", "Employee"),
+		insertInto("Employee")
+		.columns("id", "dateOfBirth", "firstName", "lastName")
+		.values(1234, "1992-05-06", "John", "Doe")
+		.build());
 }

@@ -1,15 +1,15 @@
 package at.christophwurst.orm.domain;
 
-import com.sun.istack.internal.Nullable;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -17,17 +17,26 @@ import javax.persistence.OneToMany;
 public class Requirement implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private String shortDesc;
-
 	private String longDesc;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Project project;
 
+	@ManyToOne(optional = true)
+	private Sprint sprint;
+
+	@OneToMany(mappedBy = "requirement", cascade = CascadeType.ALL)
+	private Set<Task> tasks = new HashSet<>();
+
 	public Requirement() {
+	}
+
+	public Requirement(String shortDesc) {
+		this.shortDesc = shortDesc;
 	}
 
 	public Long getId() {
@@ -62,9 +71,6 @@ public class Requirement implements Serializable {
 		this.longDesc = longDesc;
 	}
 
-	@ManyToOne(optional = true)
-	private Sprint sprint;
-
 	public Sprint getSprint() {
 		return sprint;
 	}
@@ -73,14 +79,19 @@ public class Requirement implements Serializable {
 		this.sprint = sprint;
 	}
 
-	@OneToMany(mappedBy = "requirement")
-	private Set<Task> tasks = new HashSet<>();
-
 	public Set<Task> getTasks() {
 		return tasks;
 	}
 
 	public void setTasks(Set<Task> tasks) {
 		this.tasks = tasks;
+	}
+
+	public void addTask(Task task) {
+		if (task.getRequirement() != null) {
+			task.getRequirement().getTasks().remove(task);
+		}
+		tasks.add(task);
+		task.setRequirement(this);
 	}
 }

@@ -1,4 +1,4 @@
-package at.christophwurst.orm.consoleclient;
+package at.christophwurst.orm.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

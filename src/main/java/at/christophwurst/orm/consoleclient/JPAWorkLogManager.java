@@ -1,5 +1,6 @@
 package at.christophwurst.orm.consoleclient;
 
+import at.christophwurst.orm.util.JPAUtil;
 import java.text.DateFormat;
 import java.util.List;
 

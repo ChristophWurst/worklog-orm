@@ -16,19 +16,37 @@
  */
 package at.christophwurst.orm.dao;
 
-import java.util.List;
-import at.christophwurst.orm.domain.Employee;
+import at.christophwurst.orm.util.JPAUtil;
+import com.ninja_squad.dbsetup.DbSetup;
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
+import com.ninja_squad.dbsetup.destination.DataSourceDestination;
+import com.ninja_squad.dbsetup.operation.Operation;
+import org.apache.derby.jdbc.ClientDataSource;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface EmployeeDao {
+public abstract class DaoTest {
 
-	public List<Employee> getAll();
+	private static DbSetup dbSetup;
 
-	public Employee getById(Long id);
+	@BeforeClass
+	public static void setUpClass() {
+		JPAUtil.getEntityManager();
 
-	public void save(Employee employee);
+		Operation operation = sequenceOf(DbOperations.PREPARE_DB);
+		ClientDataSource ds = new ClientDataSource();
+		ds.setServerName("localhost");
+		ds.setDatabaseName("WorkLogDb");
+		dbSetup = new DbSetup(new DataSourceDestination(ds), operation);
+	}
+
+	@Before
+	public void setUp() {
+		dbSetup.launch();
+	}
 
 }
