@@ -37,7 +37,10 @@ import javax.persistence.TemporalType;
 	attributeNodes = @NamedAttributeNode(value = "projects", subgraph = "projGraph"),
 	subgraphs = {
 		@NamedSubgraph(name = "projGraph", attributeNodes = @NamedAttributeNode(value = "requirements", subgraph = "reqGraph")),
-		@NamedSubgraph(name = "reqGraph", attributeNodes = @NamedAttributeNode(value = "tasks", subgraph = "taskGraph")),
+		@NamedSubgraph(name = "reqGraph", attributeNodes = {
+		@NamedAttributeNode(value = "tasks", subgraph = "taskGraph"),
+		@NamedAttributeNode(value = "sprint")
+	}),
 		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries"))
 	})
 public class Employee implements Serializable {

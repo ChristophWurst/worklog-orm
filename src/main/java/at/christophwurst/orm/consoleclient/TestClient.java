@@ -87,6 +87,18 @@ public class TestClient {
 		});
 	}
 
+	private void showProjectAndSprintTimePerEmployee() {
+		statisticsService.getEmployeeTimeOnSprint().forEach((Employee empl, Map<Project, Map<Sprint, Long>> stat) -> {
+			System.out.println("# Employee " + empl);
+			stat.forEach((Project proj, Map<Sprint, Long> projStat) -> {
+				System.out.println("  - Project " + proj);
+				projStat.forEach((Sprint sprint, Long time) -> {
+					System.out.println("    - Sprint " + sprint + ": " + msToHours(time) + "h");
+				});
+			});
+		});
+	}
+
 	public void run() {
 		System.out.print("Scrum project test client started");
 
@@ -96,6 +108,7 @@ public class TestClient {
 		showSprintTimePerProject();
 		showRequiremntTimePerProject();
 		showProjectTimePerEmployee();
+		showProjectAndSprintTimePerEmployee();
 	}
 
 }

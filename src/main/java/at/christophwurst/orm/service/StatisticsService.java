@@ -30,6 +30,8 @@ public interface StatisticsService {
 
 	public Map<Employee, Map<Project, Long>> getEmployeeTimeOnProject();
 
+	public Map<Employee, Map<Project, Map<Sprint, Long>>> getEmployeeTimeOnSprint();
+
 	public Map<Project, Map<Employee, Long>> getEmployeeTimeOnProjectPerEmployee();
 
 	public Map<Project, Map<Sprint, Long>> getSprintTimePerProject();
