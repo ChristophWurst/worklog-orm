@@ -26,16 +26,12 @@ import java.util.Set;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 
-class ProjectDaoImpl implements ProjectDao {
+class ProjectDaoImpl extends DaoImpl<Project> implements ProjectDao {
 
-	@Override
-	public List<Project> getAll() {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		List<Project> projects = em.createQuery("from Project", Project.class).getResultList();
-		JPAUtil.commit();
-		return projects;
+	public ProjectDaoImpl() {
+		super(Project.class);
 	}
-
+	
 	@Override
 	public List<Project> getProjectsAndLogbookEntries() {
 		EntityManager em = JPAUtil.getTransactedEntityManager();
@@ -54,22 +50,6 @@ class ProjectDaoImpl implements ProjectDao {
 
 		JPAUtil.commit();
 		return projects;
-	}
-
-	@Override
-	public Project getById(Long id) {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		Project proj = em.find(Project.class, id);
-		JPAUtil.commit();
-		return proj;
-	}
-
-	@Override
-	public void save(Project p) {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		System.out.println("Persisting project with " + p.getRequirements().size() + " reqs");
-		em.persist(p);
-		JPAUtil.commit();
 	}
 
 }

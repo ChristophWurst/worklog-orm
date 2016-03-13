@@ -16,35 +16,50 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.util.JPAUtil;
-import java.util.HashMap;
-import java.util.Map;
-import javax.persistence.EntityGraph;
+import java.util.List;
 import javax.persistence.EntityManager;
 
-class SprintDaoImpl extends DaoImpl<Sprint> implements SprintDao {
+/**
+ *
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
+ */
+abstract class DaoImpl<T> implements Dao<T> {
 
-	public SprintDaoImpl() {
-		super(Sprint.class);
+	private final Class<T> clazz;
+
+	public DaoImpl(Class<T> clazz) {
+		this.clazz = clazz;
 	}
 
 	@Override
-	public Sprint getSprintAndWorklogs(Sprint sprint) {
+	public List<T> getAll() {
 		EntityManager em = JPAUtil.getTransactedEntityManager();
-		EntityGraph graph = em.getEntityGraph("graph.Sprint.logbookEntries");
-
-		Map hints = new HashMap();
-		hints.put("javax.persistence.fetchgraph", graph);
-
-		sprint = em.merge(sprint);
-		sprint = em.createQuery("select s from Sprint s where s = :s", Sprint.class)
-			.setParameter("s", sprint)
-			.setHint("javax.persistence.fetchgraph", graph)
-			.getSingleResult();
-
+		List<T> result = em.createQuery("from " + clazz.getName(), clazz).getResultList();
 		JPAUtil.commit();
-		return sprint;
+		return result;
+	}
+
+	@Override
+	public T getById(Long id) {
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		T elem = em.find(clazz, id);
+		JPAUtil.commit();
+		return elem;
+	}
+
+	@Override
+	public void saveOrUpdate(T t) {
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		em.persist(t); // TODO: merge?
+		JPAUtil.commit();
+	}
+
+	@Override
+	public void delete(T t) {
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		em.remove(t);
+		JPAUtil.commit();
 	}
 
 }

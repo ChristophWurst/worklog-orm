@@ -18,7 +18,10 @@ package at.christophwurst.orm.dao;
 
 import at.christophwurst.orm.domain.Requirement;
 
+class RequirementDaoImpl extends DaoImpl<Requirement> implements RequirementDao {
 
-class RequirementDaoImpl extends Dao<Requirement> implements RequirementDao {
+	public RequirementDaoImpl() {
+		super(Requirement.class);
+	}
 
 }

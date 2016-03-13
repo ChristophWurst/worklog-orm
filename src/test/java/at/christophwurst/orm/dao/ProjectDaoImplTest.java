@@ -16,12 +16,24 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.Project;
 
-/**
- *
- * @author Christoph Wurst <christoph@winzerhof-wurst.at>
- */
-public interface RequirementDao extends Dao<Requirement> {
+public class ProjectDaoImplTest extends DaoTest<Project> {
+
+	public ProjectDaoImplTest() {
+		super(Project.class);
+	}
+
+	@Override
+	public void setUp() {
+		super.setUp();
+		dao = new ProjectDaoImpl();
+	}
+
+	@Override
+	protected void prepareData() {
+		elem1 = new Project("Test 1");
+		elem2 = new Project("Test 2");
+	}
 
 }

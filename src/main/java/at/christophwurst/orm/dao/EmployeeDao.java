@@ -23,14 +23,8 @@ import at.christophwurst.orm.domain.Employee;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface EmployeeDao {
+public interface EmployeeDao extends Dao<Employee> {
 
-	public List<Employee> getAll();
-
-	public Employee getById(Long id);
-
-	public void save(Employee employee);
-	
 	public List<Employee> getEmployeesAndLogbookEntries();
 
 }

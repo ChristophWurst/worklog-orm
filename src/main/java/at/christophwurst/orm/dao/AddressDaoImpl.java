@@ -16,12 +16,12 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.Address;
 
-/**
- *
- * @author Christoph Wurst <christoph@winzerhof-wurst.at>
- */
-public interface RequirementDao extends Dao<Requirement> {
+class AddressDaoImpl extends DaoImpl<Address> implements AddressDao {
+
+	public AddressDaoImpl() {
+		super(Address.class);
+	}
 
 }

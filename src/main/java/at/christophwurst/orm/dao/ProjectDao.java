@@ -23,14 +23,8 @@ import java.util.List;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface ProjectDao {
+public interface ProjectDao extends Dao<Project> {
 
-	public List<Project> getAll();
-	
 	public List<Project> getProjectsAndLogbookEntries();
-
-	public Project getById(Long id);
-
-	public void save(Project p);
 
 }

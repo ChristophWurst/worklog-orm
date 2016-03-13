@@ -16,12 +16,12 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.LogbookEntry;
 
-/**
- *
- * @author Christoph Wurst <christoph@winzerhof-wurst.at>
- */
-public interface RequirementDao extends Dao<Requirement> {
+class LogbookEntryDaoImpl extends DaoImpl<LogbookEntry> implements LogbookEntryDao {
+
+	public LogbookEntryDaoImpl() {
+		super(LogbookEntry.class);
+	}
 
 }

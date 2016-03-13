@@ -16,12 +16,12 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.Task;
 
-/**
- *
- * @author Christoph Wurst <christoph@winzerhof-wurst.at>
- */
-public interface RequirementDao extends Dao<Requirement> {
+class TaskDaoImpl extends DaoImpl<Task> implements TaskDao {
+
+	public TaskDaoImpl() {
+		super(Task.class);
+	}
 
 }

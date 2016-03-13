@@ -16,19 +16,20 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.util.JPAUtil;
-import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-abstract class Dao<T> {
+public interface Dao<T> {
 
-	public void save(T t) {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		em.persist(t);
-		JPAUtil.commit();
-	}
+	List<T> getAll();
+
+	T getById(Long id);
+
+	void saveOrUpdate(T t);
+
+	void delete(T t);
 
 }

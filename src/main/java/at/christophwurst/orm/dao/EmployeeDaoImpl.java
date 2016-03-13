@@ -30,29 +30,10 @@ import javax.persistence.EntityManager;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-class EmployeeDaoImpl implements EmployeeDao {
+class EmployeeDaoImpl extends DaoImpl<Employee> implements EmployeeDao {
 
-	@Override
-	public List<Employee> getAll() {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		List<Employee> empls = em.createQuery("from Employee", Employee.class).getResultList();
-		JPAUtil.commit();
-		return empls;
-	}
-
-	@Override
-	public Employee getById(Long id) {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		Employee empl = em.find(Employee.class, id);
-		JPAUtil.commit();
-		return empl;
-	}
-
-	@Override
-	public void save(Employee employee) {
-		EntityManager em = JPAUtil.getTransactedEntityManager();
-		em.persist(employee);
-		JPAUtil.commit();
+	public EmployeeDaoImpl() {
+		super(Employee.class);
 	}
 
 	@Override

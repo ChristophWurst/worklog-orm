@@ -24,14 +24,25 @@ import com.ninja_squad.dbsetup.operation.Operation;
 import org.apache.derby.jdbc.ClientDataSource;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public abstract class DaoTest {
+public abstract class DaoTest<T> {
 
-	private static DbSetup dbSetup;
+	protected static DbSetup dbSetup;
+	protected final Class<T> clazz;
+	protected T elem1 = null;
+	protected T elem2 = null;
+	protected Dao<T> dao;
+
+	public DaoTest(Class<T> clazz) {
+		this.clazz = clazz;
+	}
+
+	protected abstract void prepareData();
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -46,7 +57,24 @@ public abstract class DaoTest {
 
 	@Before
 	public void setUp() {
+		prepareData();
 		dbSetup.launch();
+	}
+
+	@Test
+	public void save() {
+		dao.saveOrUpdate(elem1);
+	}
+
+	@Test
+	public void update() {
+		dao.saveOrUpdate(elem1);
+		dao.saveOrUpdate(elem1);
+	}
+
+	@Test
+	public void delete() {
+		dao.delete(elem1);
 	}
 
 }

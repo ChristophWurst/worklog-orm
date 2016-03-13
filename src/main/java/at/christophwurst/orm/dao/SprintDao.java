@@ -17,16 +17,13 @@
 package at.christophwurst.orm.dao;
 
 import at.christophwurst.orm.domain.Sprint;
-import java.util.List;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface SprintDao {
+public interface SprintDao extends Dao<Sprint> {
 
 	public Sprint getSprintAndWorklogs(Sprint sprint);
-
-	public List<Sprint> getAll();
 
 }

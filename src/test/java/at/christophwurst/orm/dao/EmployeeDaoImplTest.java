@@ -17,6 +17,7 @@
 package at.christophwurst.orm.dao;
 
 import at.christophwurst.orm.domain.Employee;
+import at.christophwurst.orm.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,9 +26,11 @@ import static org.junit.Assert.*;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public class EmployeeDaoImplTest extends DaoTest {
+public class EmployeeDaoImplTest extends DaoTest<Employee> {
 
-	private EmployeeDaoImpl dao;
+	public EmployeeDaoImplTest() {
+		super(Employee.class);
+	}
 
 	@Before
 	@Override
@@ -55,5 +58,11 @@ public class EmployeeDaoImplTest extends DaoTest {
 		Employee e = dao.getById(3000L);
 
 		assertNull(e);
+	}
+
+	@Override
+	protected void prepareData() {
+		elem1 = new Employee("Jane", "Doe", DateUtil.getDate(1980, 05, 06));
+		elem2 = new Employee("John", "Doe", DateUtil.getDate(1970, 4, 5));
 	}
 }

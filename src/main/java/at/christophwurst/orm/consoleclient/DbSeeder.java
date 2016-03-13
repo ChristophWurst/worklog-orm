@@ -107,8 +107,8 @@ public class DbSeeder {
 		p2.addSprint(new Sprint(3));
 		p2.addMember(e2);
 
-		projectDao.save(p1);
-		projectDao.save(p2);
+		projectDao.saveOrUpdate(p1);
+		projectDao.saveOrUpdate(p2);
 	}
 
 }
