@@ -3,6 +3,7 @@ package at.christophwurst.orm.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 @Entity
 public class Sprint implements Serializable {
@@ -25,11 +27,15 @@ public class Sprint implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-
 	private int nr;
-
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date startDate;
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date endDate;
+	@ManyToOne
+	private Project project;
+	@OneToMany
+	private Set<Requirement> requirements = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -63,9 +69,6 @@ public class Sprint implements Serializable {
 		this.endDate = endDate;
 	}
 
-	@ManyToOne
-	private Project project;
-
 	public Project getProject() {
 		return project;
 	}
@@ -74,15 +77,30 @@ public class Sprint implements Serializable {
 		this.project = project;
 	}
 
-	@OneToMany
-	private Set<Requirement> requirements = new HashSet<>();
-
 	public Set<Requirement> getRequirements() {
 		return requirements;
 	}
 
 	public void setRequirements(Set<Requirement> requirements) {
 		this.requirements = requirements;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Sprint) {
+			return Objects.equals(((Sprint) o).getId(), this.getId());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 3;
+		hash = 97 * hash + Objects.hashCode(this.id);
+		hash = 97 * hash + this.nr;
+		hash = 97 * hash + Objects.hashCode(this.startDate);
+		hash = 97 * hash + Objects.hashCode(this.endDate);
+		return hash;
 	}
 
 }

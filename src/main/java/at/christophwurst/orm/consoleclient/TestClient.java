@@ -59,8 +59,14 @@ public class TestClient {
 		List<Employee> empls = new ArrayList<>();
 		empls.add(e1);
 		empls.add(e2);
+		List<Sprint> sprints1 = new ArrayList<>();
+		sprints1.add(new Sprint(1));
+		sprints1.add(new Sprint(2));
+		sprints1.add(new Sprint(3));
 		Requirement r11 = new Requirement("Reqirement 1-1");
+		r11.setSprint(sprints1.get(0));
 		Requirement r12 = new Requirement("Reqirement 1-2");
+		r12.setSprint(sprints1.get(1));
 		Requirement r13 = new Requirement("Reqirement 1-3");
 		Task t111 = new Task("Design 11");
 		Task t112 = new Task("Implemnt 11");
@@ -95,9 +101,6 @@ public class TestClient {
 		r13.addTask(t131);
 
 		Project p1 = new Project("Project A");
-		p1.addSprint(new Sprint(1));
-		p1.addSprint(new Sprint(2));
-		p1.addSprint(new Sprint(3));
 		p1.addMember(e1);
 		p1.addMember(e2);
 		p1.addRequirement(r11);
@@ -114,11 +117,21 @@ public class TestClient {
 	}
 
 	private void showEmployeeTimePerProject() {
-		statisticsService.getTimeOnProjectPerEmployee().forEach((Project p, Map<Employee, Long> stat) -> {
+		statisticsService.getEmployeeTimeOnProjectPerEmployee().forEach((Project p, Map<Employee, Long> stat) -> {
 			System.out.println("# Project " + p);
 			stat.forEach((Employee e, Long time) -> {
 				long hours = time / (1000 * 3600);
 				System.out.println("  - " + e + ": " + hours + "h");
+			});
+		});
+	}
+
+	private void showSprintTimePerProject() {
+		statisticsService.getSprintTimePerProject().forEach((Project p, Map<Sprint, Long> stat) -> {
+			System.out.println("# Project " + p);
+			stat.forEach((Sprint sprint, Long time) -> {
+				long hours = time / (1000 * 3600);
+				System.out.println("  - " + sprint + ": " + hours + "h");
 			});
 		});
 	}
@@ -129,6 +142,7 @@ public class TestClient {
 		prepareData();
 
 		showEmployeeTimePerProject();
+		showSprintTimePerProject();
 	}
 
 }

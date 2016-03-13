@@ -21,7 +21,10 @@ import javax.persistence.OneToMany;
 		@NamedAttributeNode(value = "sprints")
 	},
 	subgraphs = {
-		@NamedSubgraph(name = "reqGraph", attributeNodes = @NamedAttributeNode(value = "tasks", subgraph = "taskGraph")),
+		@NamedSubgraph(name = "reqGraph", attributeNodes = {
+			@NamedAttributeNode(value = "tasks", subgraph = "taskGraph"),
+			@NamedAttributeNode(value = "sprint")
+		}),
 		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries", subgraph = "emplGraph")),
 		@NamedSubgraph(name = "emplGrah", attributeNodes = @NamedAttributeNode(value = "employee"))
 	})

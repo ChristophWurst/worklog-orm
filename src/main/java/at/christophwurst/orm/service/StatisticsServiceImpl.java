@@ -21,9 +21,11 @@ import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
 import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.domain.Task;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 class StatisticsServiceImpl implements StatisticsService {
 
@@ -54,10 +56,43 @@ class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	@Override
-	public Map<Project, Map<Employee, Long>> getTimeOnProjectPerEmployee() {
+	public Map<Project, Map<Employee, Long>> getEmployeeTimeOnProjectPerEmployee() {
 		Map<Project, Map<Employee, Long>> result = new HashMap<>();
 		projectDao.getProjectsAndLogbookEntries().forEach((Project p) -> {
 			result.put(p, getEmployeeTimeOnProject(p));
+		});
+		return result;
+	}
+
+	private Map<Sprint, Long> getSprintTimeOnProject(Project p) {
+		Map<Sprint, Long> result = new HashMap<>();
+		p.getRequirements().forEach((Requirement req) -> {
+			if (req.getSprint() == null) {
+				// Nothing to do
+				return;
+			}
+
+			Sprint sprint = req.getSprint();
+			Long time = req.getTasks().stream().mapToLong((Task tsk) -> {
+				return tsk.getLogbookEntries().stream().mapToLong(LogbookEntry::getTotalTime).sum();
+			}).sum();
+
+			Long currValue = 0L;
+			if (result.containsKey(sprint)) {
+				currValue = result.remove(sprint);
+			}
+			currValue += time;
+			result.put(sprint, currValue);
+		});
+
+		return result;
+	}
+
+	@Override
+	public Map<Project, Map<Sprint, Long>> getSprintTimePerProject() {
+		Map<Project, Map<Sprint, Long>> result = new HashMap<>();
+		projectDao.getProjectsAndLogbookEntries().forEach((Project p) -> {
+			result.put(p, getSprintTimeOnProject(p));
 		});
 		return result;
 	}
