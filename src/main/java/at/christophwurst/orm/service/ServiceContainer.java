@@ -17,6 +17,7 @@
 package at.christophwurst.orm.service;
 
 import at.christophwurst.orm.dao.DatabaseFactory;
+import at.christophwurst.orm.dao.EmployeeDao;
 import at.christophwurst.orm.dao.ProjectDao;
 
 /**
@@ -26,13 +27,15 @@ import at.christophwurst.orm.dao.ProjectDao;
 public class ServiceContainer {
 
 	private static ProjectDao projectDao;
+	private static EmployeeDao emplyoeeDao;
 
 	static {
 		projectDao = DatabaseFactory.getProjectDao();
+		emplyoeeDao = DatabaseFactory.getEmployeeDao();
 	}
 
 	public static StatisticsService getStatisticsService() {
-		return new StatisticsServiceImpl(projectDao);
+		return new StatisticsServiceImpl(projectDao, emplyoeeDao);
 	}
 
 }

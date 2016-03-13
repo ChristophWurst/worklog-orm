@@ -30,5 +30,7 @@ public interface EmployeeDao {
 	public Employee getById(Long id);
 
 	public void save(Employee employee);
+	
+	public List<Employee> getEmployeesAndLogbookEntries();
 
 }

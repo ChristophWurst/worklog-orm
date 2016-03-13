@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -30,6 +33,13 @@ import javax.persistence.TemporalType;
 //@DiscriminatorValue("E")
 // Version 3: joined-subclass in Hibernate
 @Inheritance(strategy = InheritanceType.JOINED)
+@NamedEntityGraph(name = "graph.Employee.logbookEntries",
+	attributeNodes = @NamedAttributeNode(value = "projects", subgraph = "projGraph"),
+	subgraphs = {
+		@NamedSubgraph(name = "projGraph", attributeNodes = @NamedAttributeNode(value = "requirements", subgraph = "reqGraph")),
+		@NamedSubgraph(name = "reqGraph", attributeNodes = @NamedAttributeNode(value = "tasks", subgraph = "taskGraph")),
+		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries"))
+	})
 public class Employee implements Serializable {
 
 	private static final long serialVersionUID = 1L;

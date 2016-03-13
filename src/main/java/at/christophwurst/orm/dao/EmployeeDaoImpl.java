@@ -19,6 +19,11 @@ package at.christophwurst.orm.dao;
 import at.christophwurst.orm.util.JPAUtil;
 import java.util.List;
 import at.christophwurst.orm.domain.Employee;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 
 /**
@@ -48,6 +53,26 @@ class EmployeeDaoImpl implements EmployeeDao {
 		EntityManager em = JPAUtil.getTransactedEntityManager();
 		em.persist(employee);
 		JPAUtil.commit();
+	}
+
+	@Override
+	public List<Employee> getEmployeesAndLogbookEntries() {
+		EntityManager em = JPAUtil.getTransactedEntityManager();
+		EntityGraph graph = em.getEntityGraph("graph.Employee.logbookEntries");
+
+		Map hints = new HashMap();
+		hints.put("javax.persistence.fetchgraph", graph);
+
+		List<Employee> projects = em.createQuery("from Employee", Employee.class)
+			.setHint("javax.persistence.fetchgraph", graph)
+			.getResultList();
+
+		Set<Employee> noDupes = new HashSet<>(projects);
+		projects.clear();
+		projects.addAll(noDupes);
+
+		JPAUtil.commit();
+		return projects;
 	}
 
 }

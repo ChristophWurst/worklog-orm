@@ -16,6 +16,7 @@
  */
 package at.christophwurst.orm.service;
 
+import at.christophwurst.orm.dao.EmployeeDao;
 import at.christophwurst.orm.dao.ProjectDao;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
@@ -25,14 +26,37 @@ import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.domain.Task;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 class StatisticsServiceImpl implements StatisticsService {
 
 	private final ProjectDao projectDao;
+	private final EmployeeDao employeeDao;
 
-	public StatisticsServiceImpl(ProjectDao projectDao) {
+	public StatisticsServiceImpl(ProjectDao projectDao, EmployeeDao employeeDao) {
 		this.projectDao = projectDao;
+		this.employeeDao = employeeDao;
+	}
+
+	private Map<Project, Long> getEmployeeTimeOnProject(Employee empl) {
+		Map<Project, Long> result = new HashMap<>();
+		empl.getProjects().forEach((Project proj) -> {
+			Long time = proj.getRequirements().stream().mapToLong((Requirement req) -> {
+				return req.getTasks().stream().mapToLong((Task tsk) -> {
+					return tsk.getLogbookEntries().stream().mapToLong(LogbookEntry::getTotalTime).sum();
+				}).sum();
+			}).sum();
+			result.put(proj, time);
+		});
+		return result;
+	}
+
+	@Override
+	public Map<Employee, Map<Project, Long>> getEmployeeTimeOnProject() {
+		Map<Employee, Map<Project, Long>> result = new HashMap<>();
+		employeeDao.getEmployeesAndLogbookEntries().forEach((Employee empl) -> {
+			result.put(empl, getEmployeeTimeOnProject(empl));
+		});
+		return result;
 	}
 
 	private Map<Employee, Long> getEmployeeTimeOnProject(Project p) {
