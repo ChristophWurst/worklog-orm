@@ -115,13 +115,16 @@ public class TestClient {
 		projectDao.save(p1);
 		projectDao.save(p2);
 	}
+	
+	private long msToHours(long val) {
+		return val / (1000 * 3600);
+	}
 
 	private void showEmployeeTimePerProject() {
 		statisticsService.getEmployeeTimeOnProjectPerEmployee().forEach((Project p, Map<Employee, Long> stat) -> {
 			System.out.println("# Project " + p);
 			stat.forEach((Employee e, Long time) -> {
-				long hours = time / (1000 * 3600);
-				System.out.println("  - " + e + ": " + hours + "h");
+				System.out.println("  - " + e + ": " + msToHours(time) + "h");
 			});
 		});
 	}
@@ -130,8 +133,16 @@ public class TestClient {
 		statisticsService.getSprintTimePerProject().forEach((Project p, Map<Sprint, Long> stat) -> {
 			System.out.println("# Project " + p);
 			stat.forEach((Sprint sprint, Long time) -> {
-				long hours = time / (1000 * 3600);
-				System.out.println("  - " + sprint + ": " + hours + "h");
+				System.out.println("  - " + sprint + ": " + msToHours(time) + "h");
+			});
+		});
+	}
+
+	private void showRequiremntTimePerProject() {
+		statisticsService.getRequirementTimePerProject().forEach((Project p, Map<Requirement, Long> stat) -> {
+			System.out.println("# Project " + p);
+			stat.forEach((Requirement r, Long time) -> {
+				System.out.println("  - " + r + ": " + msToHours(time) + "h");
 			});
 		});
 	}
@@ -143,6 +154,7 @@ public class TestClient {
 
 		showEmployeeTimePerProject();
 		showSprintTimePerProject();
+		showRequiremntTimePerProject();
 	}
 
 }

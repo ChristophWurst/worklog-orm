@@ -97,4 +97,24 @@ class StatisticsServiceImpl implements StatisticsService {
 		return result;
 	}
 
+	private Map<Requirement, Long> getRequirementTimeOnProject(Project p) {
+		Map<Requirement, Long> result = new HashMap<>();
+		p.getRequirements().forEach((Requirement req) -> {
+			Long time = req.getTasks().stream().mapToLong((Task tsk) -> {
+				return tsk.getLogbookEntries().stream().mapToLong(LogbookEntry::getTotalTime).sum();
+			}).sum();
+			result.put(req, time);
+		});
+		return result;
+	}
+
+	@Override
+	public Map<Project, Map<Requirement, Long>> getRequirementTimePerProject() {
+		Map<Project, Map<Requirement, Long>> result = new HashMap<>();
+		projectDao.getProjectsAndLogbookEntries().forEach((Project p) -> {
+			result.put(p, getRequirementTimeOnProject(p));
+		});
+		return result;
+	}
+
 }

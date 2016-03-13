@@ -18,6 +18,7 @@ package at.christophwurst.orm.service;
 
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Sprint;
 import java.util.Map;
 
@@ -30,5 +31,7 @@ public interface StatisticsService {
 	public Map<Project, Map<Employee, Long>> getEmployeeTimeOnProjectPerEmployee();
 
 	public Map<Project, Map<Sprint, Long>> getSprintTimePerProject();
+
+	public Map<Project, Map<Requirement, Long>> getRequirementTimePerProject();
 
 }
