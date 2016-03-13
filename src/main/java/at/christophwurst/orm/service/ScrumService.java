@@ -14,28 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.dao;
+package at.christophwurst.orm.service;
+
+import at.christophwurst.orm.domain.Sprint;
+import java.util.List;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public class DatabaseFactory {
+public interface ScrumService {
 
-	public static EmployeeDao getEmployeeDao() {
-		return new EmployeeDaoImpl();
-	}
-
-	public static ProjectDao getProjectDao() {
-		return new ProjectDaoImpl();
-	}
-
-	public static RequirementDao getRequirementDao() {
-		return new RequirementDaoImpl();
-	}
-
-	public static SprintDao getSprintDao() {
-		return new SprintDaoImpl();
-	}
+	public List<Sprint> getAllSprints();
 
 }

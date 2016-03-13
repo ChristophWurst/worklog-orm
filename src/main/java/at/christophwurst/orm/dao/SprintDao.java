@@ -16,26 +16,17 @@
  */
 package at.christophwurst.orm.dao;
 
+import at.christophwurst.orm.domain.Sprint;
+import java.util.List;
+
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public class DatabaseFactory {
+public interface SprintDao {
 
-	public static EmployeeDao getEmployeeDao() {
-		return new EmployeeDaoImpl();
-	}
+	public Sprint getSprintAndWorklogs(Sprint sprint);
 
-	public static ProjectDao getProjectDao() {
-		return new ProjectDaoImpl();
-	}
-
-	public static RequirementDao getRequirementDao() {
-		return new RequirementDaoImpl();
-	}
-
-	public static SprintDao getSprintDao() {
-		return new SprintDaoImpl();
-	}
+	public List<Sprint> getAll();
 
 }

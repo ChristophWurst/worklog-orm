@@ -16,15 +16,15 @@
  */
 package at.christophwurst.orm.consoleclient;
 
-import at.christophwurst.orm.dao.DatabaseFactory;
-import at.christophwurst.orm.dao.EmployeeDao;
-import at.christophwurst.orm.dao.ProjectDao;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Sprint;
+import at.christophwurst.orm.service.BurnDownService;
+import at.christophwurst.orm.service.ScrumService;
 import at.christophwurst.orm.service.ServiceContainer;
 import at.christophwurst.orm.service.StatisticsService;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -38,13 +38,13 @@ public class TestClient {
 	}
 
 	private final StatisticsService statisticsService;
-	private final EmployeeDao employeeDao;
-	private final ProjectDao projectDao;
+	private final ScrumService scrumService;
+	private final BurnDownService burnDownService;
 
 	public TestClient() {
 		statisticsService = ServiceContainer.getStatisticsService();
-		employeeDao = DatabaseFactory.getEmployeeDao();
-		projectDao = DatabaseFactory.getProjectDao();
+		scrumService = ServiceContainer.getScrumService();
+		burnDownService = ServiceContainer.getBurnDownService();
 	}
 
 	private long msToHours(long val) {
@@ -99,6 +99,16 @@ public class TestClient {
 		});
 	}
 
+	private void showBurnDownCharts() {
+		System.out.println("# BurnDown charts:");
+		scrumService.getAllSprints().forEach((Sprint sprint) -> {
+			System.out.println("  - Sprint " + sprint);
+			burnDownService.getBurnDownData(sprint).forEach((Date d, Float val) -> {
+				System.out.println("    - " + d + ": " + val);
+			});
+		});
+	}
+
 	public void run() {
 		System.out.print("Scrum project test client started");
 
@@ -109,6 +119,8 @@ public class TestClient {
 		showRequiremntTimePerProject();
 		showProjectTimePerEmployee();
 		showProjectAndSprintTimePerEmployee();
+
+		showBurnDownCharts();
 	}
 
 }

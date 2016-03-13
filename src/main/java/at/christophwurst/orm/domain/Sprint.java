@@ -11,10 +11,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 @Entity
+@NamedEntityGraph(name = "graph.Sprint.logbookEntries",
+	attributeNodes = @NamedAttributeNode(value = "requirements", subgraph = "reqGraph"),
+	subgraphs = {
+		@NamedSubgraph(name = "reqGraph", attributeNodes = @NamedAttributeNode(value = "tasks", subgraph = "taskGraph")),
+		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries"))
+	})
 public class Sprint implements Serializable {
 
 	public Sprint() {
@@ -83,6 +92,14 @@ public class Sprint implements Serializable {
 
 	public void setRequirements(Set<Requirement> requirements) {
 		this.requirements = requirements;
+	}
+
+	public void addRequirement(Requirement requirement) {
+		if (requirement.getSprint() != null) {
+			requirement.getSprint().getRequirements().remove(requirement);
+		}
+		requirements.add(requirement);
+		requirement.setSprint(this);
 	}
 
 	@Override
