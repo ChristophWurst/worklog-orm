@@ -24,9 +24,9 @@ import com.ninja_squad.dbsetup.operation.Operation;
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
 public class DbOperations {
-	
+
 	public static final Operation PREPARE_DB = sequenceOf(
-		deleteAllFrom("Address", "Task", "LogbookEntry", "Employee", "Sprint"),
+		deleteAllFrom("Address", "Task", "LogbookEntry", "Employee", "Sprint", "Requirement"),
 		insertInto("Address")
 		.columns("city", "street", "zipCode")
 		.values("Hollabrunn", "Pfarrgasse", "2020")
@@ -36,5 +36,20 @@ public class DbOperations {
 		.columns("id", "dateOfBirth", "firstName", "lastName")
 		.values(1234, "1992-05-06", "John", "Doe")
 		.values(1235, "1992-01-06", "Jane", "Doe")
+		.build(),
+		insertInto("Task")
+		.columns("shortDescription", "estimatedTime")
+		.values("Tsk 1", 3)
+		.values("Tsk 2", 5)
+		.build(),
+		insertInto("Sprint")
+		.columns("id", "nr")
+		.values(1, 1)
+		.values(2, 2)
+		.build(),
+		insertInto("Requirement")
+		.columns("shortDesc")
+		.values("Req 1")
+		.values("Req 2")
 		.build());
 }

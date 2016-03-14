@@ -17,6 +17,9 @@
 package at.christophwurst.orm.dao;
 
 import at.christophwurst.orm.domain.Task;
+import java.util.List;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -37,6 +40,17 @@ public class TaskDaoImplTest extends DaoTest<Task> {
 	protected void prepareData() {
 		elem1 = new Task("Task 1");
 		elem2 = new Task("Task 2");
+	}
+
+	@Test
+	public void find() {
+		List<Task> all = dao.getAll();
+		assertEquals(2, all.size());
+
+		Task found = dao.getById(all.get(0).getId());
+		assertNotNull(found);
+		Task notFound = dao.getById(0L);
+		assertNull(notFound);
 	}
 
 }

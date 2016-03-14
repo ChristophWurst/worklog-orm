@@ -17,6 +17,11 @@
 package at.christophwurst.orm.dao;
 
 import at.christophwurst.orm.domain.Requirement;
+import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import org.junit.Test;
 
 /**
  *
@@ -37,6 +42,17 @@ public class RequirementDaoImplTest extends DaoTest<Requirement> {
 	protected void prepareData() {
 		elem1 = new Requirement("Req 1");
 		elem2 = new Requirement("Req 2");
+	}
+
+	@Test
+	public void find() {
+		List<Requirement> all = dao.getAll();
+		assertEquals(2, all.size());
+
+		Requirement found = dao.getById(all.get(0).getId());
+		assertNotNull(found);
+		Requirement notFound = dao.getById(0L);
+		assertNull(notFound);
 	}
 
 }
