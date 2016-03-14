@@ -51,7 +51,7 @@ abstract class DaoImpl<T> implements Dao<T> {
 	@Override
 	public void saveOrUpdate(T t) {
 		EntityManager em = JPAUtil.getTransactedEntityManager();
-		em.persist(t); // TODO: merge?
+		em.merge(t);
 		JPAUtil.commit();
 	}
 

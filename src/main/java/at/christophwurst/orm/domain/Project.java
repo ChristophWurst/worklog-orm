@@ -23,12 +23,11 @@ import javax.persistence.OneToMany;
 	},
 	subgraphs = {
 		@NamedSubgraph(name = "reqGraph", attributeNodes = {
-			@NamedAttributeNode(value = "tasks", subgraph = "taskGraph"),
-			@NamedAttributeNode(value = "sprint")
-		}),
+		@NamedAttributeNode(value = "tasks", subgraph = "taskGraph"),
+		@NamedAttributeNode(value = "sprint")
+	}),
 		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries", subgraph = "emplGraph")),
-		@NamedSubgraph(name = "emplGraph", attributeNodes = @NamedAttributeNode(value = "employee")),
-	})
+		@NamedSubgraph(name = "emplGraph", attributeNodes = @NamedAttributeNode(value = "employee")),})
 public class Project implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,7 +37,7 @@ public class Project implements Serializable {
 	private Long id;
 	private String name;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private Set<Employee> employees = new HashSet<>();
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
@@ -98,7 +97,7 @@ public class Project implements Serializable {
 	public void setSprints(Set<Sprint> sprints) {
 		this.sprints = sprints;
 	}
-	
+
 	public void addSprint(Sprint sprint) {
 		if (sprint.getProject() != null) {
 			sprint.getProject().getSprints().remove(sprint);
@@ -114,7 +113,7 @@ public class Project implements Serializable {
 	public void setRequirements(Set<Requirement> requirements) {
 		this.requirements = requirements;
 	}
-	
+
 	public void addRequirement(Requirement requirement) {
 		if (requirement.getProject() != null) {
 			requirement.getProject().getRequirements().remove(requirement);
