@@ -16,23 +16,27 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.Address;
 
-public class ProjectDaoImplTest extends DaoTest<Project> {
+/**
+ *
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
+ */
+public class AddressDaoImplTest extends DaoTest<Address> {
 
-	public ProjectDaoImplTest() {
-		super(Project.class);
+	public AddressDaoImplTest() {
+		super(Address.class);
 	}
 
 	@Override
-	protected Dao<Project> getDao() {
-		return new ProjectDaoImpl();
+	protected Dao<Address> getDao() {
+		return new AddressDaoImpl();
 	}
 
 	@Override
 	protected void prepareData() {
-		elem1 = new Project("Test 1");
-		elem2 = new Project("Test 2");
+		elem1 = new Address("1234", "Linz", "Bahnstrasse");
+		elem2 = new Address("2073", "Schrattenthal", "");
 	}
 
 }

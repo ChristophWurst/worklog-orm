@@ -21,6 +21,7 @@ import com.ninja_squad.dbsetup.DbSetup;
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import com.ninja_squad.dbsetup.destination.DataSourceDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
+import javax.transaction.Transactional;
 import org.apache.derby.jdbc.ClientDataSource;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -30,6 +31,7 @@ import org.junit.Test;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
+@Transactional
 public abstract class DaoTest<T> {
 
 	protected static DbSetup dbSetup;
@@ -42,6 +44,7 @@ public abstract class DaoTest<T> {
 		this.clazz = clazz;
 	}
 
+	protected abstract Dao<T> getDao();
 	protected abstract void prepareData();
 
 	@BeforeClass
@@ -57,6 +60,7 @@ public abstract class DaoTest<T> {
 
 	@Before
 	public void setUp() {
+		dao = getDao();
 		prepareData();
 		dbSetup.launch();
 	}

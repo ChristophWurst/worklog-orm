@@ -16,23 +16,31 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.Employee;
+import at.christophwurst.orm.domain.LogbookEntry;
+import at.christophwurst.orm.util.DateUtil;
 
-public class ProjectDaoImplTest extends DaoTest<Project> {
+/**
+ *
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
+ */
+public class LogbookEntryDaoImplTest extends DaoTest<LogbookEntry> {
 
-	public ProjectDaoImplTest() {
-		super(Project.class);
+	public LogbookEntryDaoImplTest() {
+		super(LogbookEntry.class);
 	}
 
 	@Override
-	protected Dao<Project> getDao() {
-		return new ProjectDaoImpl();
+	protected Dao<LogbookEntry> getDao() {
+		return new LogbookEntryDaoImpl();
 	}
 
 	@Override
 	protected void prepareData() {
-		elem1 = new Project("Test 1");
-		elem2 = new Project("Test 2");
+		elem1 = new LogbookEntry("Log 1", DateUtil.getTime(2016, 3, 14, 8, 30), DateUtil.getTime(2016, 3, 14, 10, 0));
+		elem1.setEmployee(new Employee());
+		elem2 = new LogbookEntry("Log 2", DateUtil.getTime(2016, 3, 14, 10, 30), DateUtil.getTime(2016, 3, 14, 12, 0));
+		elem2.setEmployee(new Employee());
 	}
-
+	
 }

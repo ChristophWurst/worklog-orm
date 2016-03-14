@@ -1,4 +1,4 @@
-/*
+	/*
  * Copyright (C) 2016 Christoph Wurst <christoph@winzerhof-wurst.at>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,23 +16,27 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.Sprint;
 
-public class ProjectDaoImplTest extends DaoTest<Project> {
+/**
+ *
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
+ */
+public class SprintDaoImplTest extends DaoTest<Sprint> {
 
-	public ProjectDaoImplTest() {
-		super(Project.class);
+	public SprintDaoImplTest() {
+		super(Sprint.class);
 	}
 
 	@Override
-	protected Dao<Project> getDao() {
-		return new ProjectDaoImpl();
+	protected Dao<Sprint> getDao() {
+		return new SprintDaoImpl();
 	}
 
 	@Override
 	protected void prepareData() {
-		elem1 = new Project("Test 1");
-		elem2 = new Project("Test 2");
+		elem1 = new Sprint(1);
+		elem2 = new Sprint(2);
 	}
 
 }

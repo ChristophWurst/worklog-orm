@@ -26,7 +26,7 @@ import com.ninja_squad.dbsetup.operation.Operation;
 public class DbOperations {
 
 	public static final Operation PREPARE_DB = sequenceOf(
-		deleteAllFrom("Address", "Employee"),
+		deleteAllFrom("Address", "LogbookEntry", "Employee", "Task", "Sprint"),
 		insertInto("Employee")
 		.columns("id", "dateOfBirth", "firstName", "lastName")
 		.values(1234, "1992-05-06", "John", "Doe")
