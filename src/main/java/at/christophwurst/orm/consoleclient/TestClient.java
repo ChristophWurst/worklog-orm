@@ -21,6 +21,7 @@ import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.service.BurnDownService;
+import at.christophwurst.orm.service.ProjectService;
 import at.christophwurst.orm.service.ScrumService;
 import at.christophwurst.orm.service.ServiceContainer;
 import at.christophwurst.orm.service.StatisticsService;
@@ -40,11 +41,13 @@ public class TestClient {
 	private final StatisticsService statisticsService;
 	private final ScrumService scrumService;
 	private final BurnDownService burnDownService;
+	private final ProjectService projectService;
 
 	public TestClient() {
 		statisticsService = ServiceContainer.getStatisticsService();
 		scrumService = ServiceContainer.getScrumService();
 		burnDownService = ServiceContainer.getBurnDownService();
+		projectService = ServiceContainer.getProjectService();
 	}
 
 	private long msToHours(long val) {
@@ -109,6 +112,13 @@ public class TestClient {
 		});
 	}
 
+	private void showProjectCosts() {
+		System.out.println("# Project costs:");
+		projectService.getProjectCosts().forEach((p, c) -> {
+			System.out.println(p + ": " + c);
+		});
+	}
+
 	public void run() {
 		System.out.print("Scrum project test client started");
 
@@ -121,6 +131,7 @@ public class TestClient {
 		showProjectAndSprintTimePerEmployee();
 
 		showBurnDownCharts();
+		showProjectCosts();
 	}
 
 }

@@ -18,7 +18,8 @@ import javax.persistence.OneToMany;
 @NamedEntityGraph(name = "graph.Project.logbookEntries",
 	attributeNodes = {
 		@NamedAttributeNode(value = "requirements", subgraph = "reqGraph"),
-		@NamedAttributeNode(value = "sprints")
+		@NamedAttributeNode(value = "sprints"),
+		@NamedAttributeNode(value = "employees")
 	},
 	subgraphs = {
 		@NamedSubgraph(name = "reqGraph", attributeNodes = {
@@ -26,7 +27,7 @@ import javax.persistence.OneToMany;
 			@NamedAttributeNode(value = "sprint")
 		}),
 		@NamedSubgraph(name = "taskGraph", attributeNodes = @NamedAttributeNode(value = "logbookEntries", subgraph = "emplGraph")),
-		@NamedSubgraph(name = "emplGrah", attributeNodes = @NamedAttributeNode(value = "employee"))
+		@NamedSubgraph(name = "emplGraph", attributeNodes = @NamedAttributeNode(value = "employee")),
 	})
 public class Project implements Serializable {
 

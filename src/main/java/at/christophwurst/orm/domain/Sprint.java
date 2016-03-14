@@ -120,4 +120,9 @@ public class Sprint implements Serializable {
 		return hash;
 	}
 
+	@Override
+	public String toString() {
+		return Integer.toString(nr);
+	}
+
 }

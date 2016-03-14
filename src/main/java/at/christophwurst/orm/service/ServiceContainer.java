@@ -27,14 +27,18 @@ import at.christophwurst.orm.dao.SprintDao;
  */
 public class ServiceContainer {
 
-	private static ProjectDao projectDao;
-	private static EmployeeDao emplyoeeDao;
-	private static SprintDao sprintDao;
+	private static final ProjectDao projectDao;
+	private static final EmployeeDao emplyoeeDao;
+	private static final SprintDao sprintDao;
 
 	static {
 		projectDao = DatabaseFactory.getProjectDao();
 		emplyoeeDao = DatabaseFactory.getEmployeeDao();
 		sprintDao = DatabaseFactory.getSprintDao();
+	}
+
+	public static ProjectService getProjectService() {
+		return new ProjectServiceImpl(projectDao);
 	}
 
 	public static StatisticsService getStatisticsService() {

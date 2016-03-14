@@ -14,27 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.dao;
+package at.christophwurst.orm.service;
 
-import static com.ninja_squad.dbsetup.Operations.*;
-import com.ninja_squad.dbsetup.operation.Operation;
+import at.christophwurst.orm.domain.Project;
+import java.util.Map;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public class DbOperations {
-	
-	public static final Operation PREPARE_DB = sequenceOf(
-		deleteAllFrom("Address", "Task", "LogbookEntry", "Employee", "Sprint"),
-		insertInto("Address")
-		.columns("city", "street", "zipCode")
-		.values("Hollabrunn", "Pfarrgasse", "2020")
-		.values("Schrattenthal", "Obermarkersdorf", "2073")
-		.build(),
-		insertInto("Employee")
-		.columns("id", "dateOfBirth", "firstName", "lastName")
-		.values(1234, "1992-05-06", "John", "Doe")
-		.values(1235, "1992-01-06", "Jane", "Doe")
-		.build());
+public interface ProjectService {
+
+	public Map<Project, Double> getProjectCosts();
+
 }

@@ -19,6 +19,7 @@ package at.christophwurst.orm.dao;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
 import at.christophwurst.orm.util.DateUtil;
+import org.junit.Test;
 
 /**
  *
@@ -41,6 +42,11 @@ public class LogbookEntryDaoImplTest extends DaoTest<LogbookEntry> {
 		elem1.setEmployee(new Employee());
 		elem2 = new LogbookEntry("Log 2", DateUtil.getTime(2016, 3, 14, 10, 30), DateUtil.getTime(2016, 3, 14, 12, 0));
 		elem2.setEmployee(new Employee());
+	}
+	
+	@Test
+	public void find() {
+		
 	}
 	
 }

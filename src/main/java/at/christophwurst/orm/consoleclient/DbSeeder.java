@@ -20,10 +20,12 @@ import at.christophwurst.orm.dao.DatabaseFactory;
 import at.christophwurst.orm.dao.ProjectDao;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
+import at.christophwurst.orm.domain.PermanentEmployee;
 import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.domain.Task;
+import at.christophwurst.orm.domain.TemporaryEmployee;
 import at.christophwurst.orm.util.DateUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +44,12 @@ public class DbSeeder {
 	}
 
 	public void seed() {
-		Employee e1 = new Employee("Jane", "Doe", DateUtil.getDate(1970, 1, 2));
-		Employee e2 = new Employee("John", "Doe", DateUtil.getDate(1970, 3, 4));
+		TemporaryEmployee e1 = new TemporaryEmployee("Jane", "Doe", DateUtil.getDate(1970, 1, 2));
+		e1.setStartDate(DateUtil.getDate(2015, 10, 11));
+		e1.setEndDate(DateUtil.getDate(2016, 1, 11));
+		e1.setHourlyRate(70);
+		PermanentEmployee e2 = new PermanentEmployee("John", "Doe", DateUtil.getDate(1970, 3, 4));
+		e2.setSalary(5000);
 		List<Employee> empls = new ArrayList<>();
 		empls.add(e1);
 		empls.add(e2);

@@ -21,10 +21,10 @@ public class Task implements Serializable {
 	private String shortDescription;
 	private String description;
 	private int estimatedTime;
-	
+
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
 	private Set<LogbookEntry> logbookEntries = new HashSet<>();
-	
+
 	@ManyToOne
 	private Requirement requirement;
 
@@ -74,7 +74,7 @@ public class Task implements Serializable {
 	public void setLogbookEntries(Set<LogbookEntry> logbookEntries) {
 		this.logbookEntries = logbookEntries;
 	}
-	
+
 	public void addLogbookEntry(LogbookEntry entry) {
 		if (entry.getTask() != null) {
 			entry.getTask().getLogbookEntries().remove(entry);
@@ -89,6 +89,11 @@ public class Task implements Serializable {
 
 	public void setRequirement(Requirement requirement) {
 		this.requirement = requirement;
+	}
+
+	@Override
+	public String toString() {
+		return shortDescription;
 	}
 
 }

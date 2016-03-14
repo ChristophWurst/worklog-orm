@@ -93,4 +93,10 @@ public class Requirement implements Serializable {
 		tasks.add(task);
 		task.setRequirement(this);
 	}
+
+	@Override
+	public String toString() {
+		return shortDesc;
+	}
+
 }

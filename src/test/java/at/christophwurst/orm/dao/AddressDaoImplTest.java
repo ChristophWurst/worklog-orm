@@ -17,6 +17,9 @@
 package at.christophwurst.orm.dao;
 
 import at.christophwurst.orm.domain.Address;
+import java.util.List;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -37,6 +40,18 @@ public class AddressDaoImplTest extends DaoTest<Address> {
 	protected void prepareData() {
 		elem1 = new Address("1234", "Linz", "Bahnstrasse");
 		elem2 = new Address("2073", "Schrattenthal", "");
+	}
+
+	@Test
+	public void find() {
+		List<Address> all = dao.getAll();
+		assertEquals(2, all.size());
+
+		Address found = dao.getById(all.get(0).getId());
+		assertNotNull(found);
+
+		Address notFound = dao.getById(Long.MIN_VALUE);
+		assertNull(notFound);
 	}
 
 }

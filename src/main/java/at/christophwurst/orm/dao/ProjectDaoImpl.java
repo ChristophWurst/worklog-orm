@@ -31,7 +31,7 @@ class ProjectDaoImpl extends DaoImpl<Project> implements ProjectDao {
 	public ProjectDaoImpl() {
 		super(Project.class);
 	}
-	
+
 	@Override
 	public List<Project> getProjectsAndLogbookEntries() {
 		EntityManager em = JPAUtil.getTransactedEntityManager();

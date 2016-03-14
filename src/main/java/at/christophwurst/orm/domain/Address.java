@@ -21,7 +21,6 @@ public class Address implements Serializable {
 	private String zipCode;
 	private String city;
 
-//	@Transient
 	private String street;
 	@OneToOne(mappedBy = "address")
 	private Employee employee;
