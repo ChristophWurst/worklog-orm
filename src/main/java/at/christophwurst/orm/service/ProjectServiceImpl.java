@@ -16,7 +16,6 @@
  */
 package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.dao.ProjectDao;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
 import at.christophwurst.orm.domain.PermanentEmployee;
@@ -25,19 +24,24 @@ import at.christophwurst.orm.domain.TemporaryEmployee;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import at.christophwurst.orm.dao.ProjectRepository;
+import javax.inject.Inject;
+import org.springframework.stereotype.Component;
 
+@Component
 class ProjectServiceImpl implements ProjectService {
 
-	private final ProjectDao projectDao;
+	@Inject
+	private ProjectRepository projectDao;
 
-	public ProjectServiceImpl(ProjectDao projectDao) {
+	public void setProjectDao(ProjectRepository projectDao) {
 		this.projectDao = projectDao;
 	}
 
 	@Override
 	public Map<Project, Double> getProjectCosts() {
 		Map<Project, Double> result = new HashMap<>();
-		List<Project> projects = projectDao.getProjectsAndLogbookEntries();
+		List<Project> projects = projectDao.findAndLoadLogbookEntries();
 		projects.forEach((Project p) -> {
 			double costs = p.getEmployees().stream().mapToDouble((Employee empl) -> {
 				if (empl instanceof TemporaryEmployee) {

@@ -16,23 +16,15 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.LogbookEntry;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class ProjectDaoImplTest extends DaoTest<Project> {
-
-	public ProjectDaoImplTest() {
-		super(Project.class);
-	}
-
-	@Override
-	protected Dao<Project> getDao() {
-		return new ProjectDaoImpl();
-	}
-
-	@Override
-	protected void prepareData() {
-		elem1 = new Project("Test 1");
-		elem2 = new Project("Test 2");
-	}
+/**
+ *
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
+ */
+@Repository
+public interface LogbookEntryRepository extends JpaRepository<LogbookEntry, Long> {
 
 }

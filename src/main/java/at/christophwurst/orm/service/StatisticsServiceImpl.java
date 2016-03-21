@@ -16,8 +16,6 @@
  */
 package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.dao.EmployeeDao;
-import at.christophwurst.orm.dao.ProjectDao;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
 import at.christophwurst.orm.domain.Project;
@@ -26,14 +24,24 @@ import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.domain.Task;
 import java.util.HashMap;
 import java.util.Map;
+import at.christophwurst.orm.dao.EmployeeRepository;
+import at.christophwurst.orm.dao.ProjectRepository;
+import javax.inject.Inject;
+import org.springframework.stereotype.Component;
 
+@Component()
 class StatisticsServiceImpl implements StatisticsService {
 
-	private final ProjectDao projectDao;
-	private final EmployeeDao employeeDao;
+	@Inject
+	private ProjectRepository projectDao;
+	@Inject
+	private EmployeeRepository employeeDao;
 
-	public StatisticsServiceImpl(ProjectDao projectDao, EmployeeDao employeeDao) {
+	public void setProjectDao(ProjectRepository projectDao) {
 		this.projectDao = projectDao;
+	}
+
+	public void setEmployeeDao(EmployeeRepository employeeDao) {
 		this.employeeDao = employeeDao;
 	}
 
@@ -118,7 +126,7 @@ class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public Map<Project, Map<Employee, Long>> getEmployeeTimeOnProjectPerEmployee() {
 		Map<Project, Map<Employee, Long>> result = new HashMap<>();
-		projectDao.getProjectsAndLogbookEntries().forEach((Project p) -> {
+		projectDao.findAndLoadLogbookEntries().forEach((Project p) -> {
 			result.put(p, getEmployeeTimeOnProject(p));
 		});
 		return result;
@@ -151,7 +159,7 @@ class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public Map<Project, Map<Sprint, Long>> getSprintTimePerProject() {
 		Map<Project, Map<Sprint, Long>> result = new HashMap<>();
-		projectDao.getProjectsAndLogbookEntries().forEach((Project p) -> {
+		projectDao.findAndLoadLogbookEntries().forEach((Project p) -> {
 			result.put(p, getSprintTimeOnProject(p));
 		});
 		return result;
@@ -171,7 +179,7 @@ class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public Map<Project, Map<Requirement, Long>> getRequirementTimePerProject() {
 		Map<Project, Map<Requirement, Long>> result = new HashMap<>();
-		projectDao.getProjectsAndLogbookEntries().forEach((Project p) -> {
+		projectDao.findAndLoadLogbookEntries().forEach((Project p) -> {
 			result.put(p, getRequirementTimeOnProject(p));
 		});
 		return result;

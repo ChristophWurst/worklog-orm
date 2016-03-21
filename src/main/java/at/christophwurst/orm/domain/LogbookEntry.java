@@ -30,7 +30,7 @@ public class LogbookEntry implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endTime;
 
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, optional = false)
 	private Employee employee;
 
 	@ManyToOne
@@ -77,7 +77,7 @@ public class LogbookEntry implements Serializable {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	
+
 	public long getTotalTime() {
 		return endTime.getTime() - startTime.getTime();
 	}

@@ -16,21 +16,25 @@
  */
 package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.dao.SprintDao;
 import at.christophwurst.orm.domain.Sprint;
 import java.util.List;
+import at.christophwurst.orm.dao.SprintRepository;
+import javax.inject.Inject;
+import org.springframework.stereotype.Component;
 
+@Component
 class ScrumServiceImpl implements ScrumService {
 
-	private final SprintDao sprintDao;
+	@Inject
+	private SprintRepository sprintDao;
 
-	public ScrumServiceImpl(SprintDao sprintDao) {
+	public void setSprintDao(SprintRepository sprintDao) {
 		this.sprintDao = sprintDao;
 	}
 
 	@Override
 	public List<Sprint> getAllSprints() {
-		return sprintDao.getAll();
+		return sprintDao.findAll();
 	}
 
 }

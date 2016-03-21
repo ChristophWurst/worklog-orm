@@ -16,12 +16,22 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Task;
+import at.christophwurst.orm.domain.Sprint;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-class TaskDaoImpl extends DaoImpl<Task> implements TaskDao {
+/**
+ *
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
+ */
+@Repository
+public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
-	public TaskDaoImpl() {
-		super(Task.class);
-	}
+	@EntityGraph(value = "graph.Sprint.logbookEntries")
+	@Query("from Sprint s where s = :sprint")
+	public Sprint getSprintAndWorklogs(@Param("sprint") Sprint sprint);
 
 }

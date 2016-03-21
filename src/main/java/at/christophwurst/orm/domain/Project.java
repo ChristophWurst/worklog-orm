@@ -37,10 +37,10 @@ public class Project implements Serializable {
 	private Long id;
 	private String name;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	private Set<Employee> employees = new HashSet<>();
 
-	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE})
 	private Set<Sprint> sprints = new HashSet<>();
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)

@@ -16,12 +16,22 @@
  */
 package at.christophwurst.orm.dao;
 
-import at.christophwurst.orm.domain.Requirement;
+import java.util.List;
+import at.christophwurst.orm.domain.Employee;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface RequirementDao extends Dao<Requirement> {
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+
+	@EntityGraph("graph.Employee.logbookEntries")
+	@Query("from Employee")
+	public List<Employee> getEmployeesAndLogbookEntries();
 
 }

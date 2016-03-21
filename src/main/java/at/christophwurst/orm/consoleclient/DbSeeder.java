@@ -16,8 +16,6 @@
  */
 package at.christophwurst.orm.consoleclient;
 
-import at.christophwurst.orm.dao.DatabaseFactory;
-import at.christophwurst.orm.dao.ProjectDao;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.LogbookEntry;
 import at.christophwurst.orm.domain.PermanentEmployee;
@@ -30,17 +28,22 @@ import at.christophwurst.orm.util.DateUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import at.christophwurst.orm.dao.ProjectRepository;
+import javax.inject.Inject;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
+@Component
 public class DbSeeder {
 
-	private final ProjectDao projectDao;
+	private ProjectRepository projectRepository;
 
-	public DbSeeder() {
-		projectDao = DatabaseFactory.getProjectDao();
+	@Inject
+	public void setProjectRepository(ProjectRepository projectRepo) {
+		projectRepository = projectRepo;
 	}
 
 	public void seed() {
@@ -113,8 +116,8 @@ public class DbSeeder {
 		p2.addSprint(new Sprint(3));
 		p2.addMember(e2);
 
-		projectDao.saveOrUpdate(p1);
-		projectDao.saveOrUpdate(p2);
+		projectRepository.save(p1);
+		projectRepository.save(p2);
 	}
 
 }

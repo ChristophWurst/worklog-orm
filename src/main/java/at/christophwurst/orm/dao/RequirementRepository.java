@@ -16,26 +16,15 @@
  */
 package at.christophwurst.orm.dao;
 
+import at.christophwurst.orm.domain.Requirement;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public class DatabaseFactory {
-
-	public static EmployeeDao getEmployeeDao() {
-		return new EmployeeDaoImpl();
-	}
-
-	public static ProjectDao getProjectDao() {
-		return new ProjectDaoImpl();
-	}
-
-	public static RequirementDao getRequirementDao() {
-		return new RequirementDaoImpl();
-	}
-
-	public static SprintDao getSprintDao() {
-		return new SprintDaoImpl();
-	}
+@Repository
+public interface RequirementRepository extends JpaRepository<Requirement, Long> {
 
 }

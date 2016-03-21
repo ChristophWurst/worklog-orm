@@ -16,7 +16,6 @@
  */
 package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.dao.SprintDao;
 import at.christophwurst.orm.domain.LogbookEntry;
 import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.domain.Task;
@@ -28,12 +27,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import at.christophwurst.orm.dao.SprintRepository;
+import javax.inject.Inject;
+import org.springframework.stereotype.Component;
 
+@Component
 class BurnDownServiceImpl implements BurnDownService {
 
-	private final SprintDao sprintDao;
+	@Inject
+	private SprintRepository sprintDao;
 
-	public BurnDownServiceImpl(SprintDao sprintDao) {
+	public void setSprintDao(SprintRepository sprintDao) {
 		this.sprintDao = sprintDao;
 	}
 

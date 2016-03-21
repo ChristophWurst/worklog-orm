@@ -23,31 +23,55 @@ import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.service.BurnDownService;
 import at.christophwurst.orm.service.ProjectService;
 import at.christophwurst.orm.service.ScrumService;
-import at.christophwurst.orm.service.ServiceContainer;
 import at.christophwurst.orm.service.StatisticsService;
 import java.util.Date;
 import java.util.Map;
+import javax.inject.Inject;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
+@Component
 public class TestClient {
 
 	public static void main(String[] args) {
-		new TestClient().run();
+		try (AbstractApplicationContext factory = new ClassPathXmlApplicationContext(
+			"at/christophwurst/worklog/config/spring-config.xml")) {
+
+			TestClient client = factory.getBean("testClient", TestClient.class);
+			client.run();
+		}
 	}
 
-	private final StatisticsService statisticsService;
-	private final ScrumService scrumService;
-	private final BurnDownService burnDownService;
-	private final ProjectService projectService;
+	@Inject
+	private DbSeeder dbSeeder;
+	@Inject
+	private StatisticsService statisticsService;
+	@Inject
+	private ScrumService scrumService;
+	@Inject
+	private BurnDownService burnDownService;
+	@Inject
+	private ProjectService projectService;
 
-	public TestClient() {
-		statisticsService = ServiceContainer.getStatisticsService();
-		scrumService = ServiceContainer.getScrumService();
-		burnDownService = ServiceContainer.getBurnDownService();
-		projectService = ServiceContainer.getProjectService();
+	public void setStatisticsService(StatisticsService statisticsService) {
+		this.statisticsService = statisticsService;
+	}
+
+	public void setScrumService(ScrumService scrumService) {
+		this.scrumService = scrumService;
+	}
+
+	public void setBurnDownService(BurnDownService burnDownService) {
+		this.burnDownService = burnDownService;
+	}
+
+	public void setProjectService(ProjectService projectService) {
+		this.projectService = projectService;
 	}
 
 	private long msToHours(long val) {
@@ -122,7 +146,7 @@ public class TestClient {
 	public void run() {
 		System.out.print("Scrum project test client started");
 
-		new DbSeeder().seed();
+		dbSeeder.seed();
 
 		showEmployeeTimePerProject();
 		showSprintTimePerProject();
