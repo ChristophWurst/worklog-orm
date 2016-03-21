@@ -67,4 +67,9 @@ class ProjectServiceImpl implements ProjectService {
 
 	}
 
+	@Override
+	public List<Project> getAllProjects() {
+		return projectDao.findAll();
+	}
+
 }

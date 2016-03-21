@@ -14,20 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.service;
-
-import at.christophwurst.orm.domain.Project;
-import java.util.List;
-import java.util.Map;
+package at.christophwurst.orm.consoleclient;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface ProjectService {
+public interface Command {
 
-	public Map<Project, Double> getProjectCosts();
-
-	public List<Project> getAllProjects();
+	void execute();
 
 }
