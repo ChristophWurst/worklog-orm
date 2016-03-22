@@ -31,4 +31,6 @@ public interface ProjectService {
 
 	public Project getById(Long id);
 
+	public Project save(Project project);
+
 }

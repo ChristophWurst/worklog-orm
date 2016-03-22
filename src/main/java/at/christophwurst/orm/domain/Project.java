@@ -1,5 +1,6 @@
 package at.christophwurst.orm.domain;
 
+import com.sun.istack.internal.Nullable;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
@@ -46,6 +48,10 @@ public class Project implements Serializable {
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	private Set<Requirement> requirements = new HashSet<>();
 
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@Nullable
+	private Employee owner;
+
 	public Project() {
 	}
 
@@ -77,12 +83,20 @@ public class Project implements Serializable {
 		this.employees = employees;
 	}
 
-	public void addMember(Employee empl) {
-		if (empl == null) {
-			throw new IllegalArgumentException("employee must not be null!");
+	public void addMember(Employee employee) {
+		if (employee == null) {
+			throw new IllegalArgumentException("employee to add must not be null!");
 		}
-		empl.getProjects().add(this);
-		this.employees.add(empl);
+		employee.getProjects().add(this);
+		employees.add(employee);
+	}
+
+	public void removeMember(Employee employee) {
+		if (employee == null) {
+			throw new IllegalArgumentException("employee to remove must not be null!");
+		}
+		employee.getProjects().remove(this);
+		employees.remove(employee);
 	}
 
 	@Override
@@ -120,6 +134,21 @@ public class Project implements Serializable {
 		}
 		requirements.add(requirement);
 		requirement.setProject(this);
+	}
+
+	public Employee getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Employee owner) {
+		if (owner == null) {
+			if (this.owner != null) {
+				this.owner.getOwnedProjects().remove(this);
+			}
+		} else {
+			owner.getOwnedProjects().add(this);
+		}
+		this.owner = owner;
 	}
 
 }

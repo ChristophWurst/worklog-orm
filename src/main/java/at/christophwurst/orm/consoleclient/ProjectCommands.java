@@ -16,8 +16,10 @@
  */
 package at.christophwurst.orm.consoleclient;
 
+import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.Sprint;
+import at.christophwurst.orm.service.EmployeeService;
 import at.christophwurst.orm.service.ProjectService;
 import java.util.Set;
 import javax.inject.Inject;
@@ -32,6 +34,8 @@ public class ProjectCommands {
 
 	@Inject
 	private ProjectService projectService;
+	@Inject
+	private EmployeeService employeeService;
 
 	public void setProjectService(ProjectService projectService) {
 		this.projectService = projectService;
@@ -42,6 +46,7 @@ public class ProjectCommands {
 			System.out.println("# Projects");
 			projectService.getAllProjects().forEach(p -> {
 				System.out.println(" - " + p.getId() + ": " + p);
+				System.out.println("   - Owner: " + p.getOwner());
 			});
 		});
 
@@ -49,6 +54,54 @@ public class ProjectCommands {
 			Long id = consoleInterface.getLongValue("project id");
 			Project pro = projectService.getById(id);
 			System.out.println(pro);
+		});
+
+		client.registerCommand("project:create", (consoleInterface) -> {
+			String name = consoleInterface.getStringValue("name");
+
+			Project project = new Project(name);
+
+			projectService.save(project);
+		});
+
+		client.registerCommand("project:owner", (consoleInterface) -> {
+			Long projectId = consoleInterface.getLongValue("project id");
+			Long employeeId = consoleInterface.getLongValue("employee id");
+
+			Project project = projectService.getById(projectId);
+			Employee employee = employeeService.getById(employeeId);
+
+			project.setOwner(employee);
+			projectService.save(project);
+		});
+
+		client.registerCommand("project:employees", (consoleInterface) -> {
+			Long id = consoleInterface.getLongValue("project id");
+			projectService.getById(id).getEmployees().forEach(e -> {
+				System.out.println(" - " + e.getId() + ": " + e);
+			});
+		});
+
+		client.registerCommand("project:employee:add", (consoleInterface) -> {
+			Long projectId = consoleInterface.getLongValue("project id");
+			Long employeeId = consoleInterface.getLongValue("employee id");
+
+			Project project = projectService.getById(projectId);
+			Employee employee = employeeService.getById(employeeId);
+
+			project.addMember(employee);
+			projectService.save(project);
+		});
+
+		client.registerCommand("project:employee:remove", (consoleInterface) -> {
+			Long projectId = consoleInterface.getLongValue("project id");
+			Long employeeId = consoleInterface.getLongValue("employee id");
+
+			Project project = projectService.getById(projectId);
+			Employee employee = employeeService.getById(employeeId);
+
+			project.removeMember(employee);
+			projectService.save(project);
 		});
 
 		client.registerCommand("project:costs", (consoleInterface) -> {

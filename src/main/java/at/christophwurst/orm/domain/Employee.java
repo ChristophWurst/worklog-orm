@@ -76,6 +76,9 @@ public class Employee implements Serializable {
 	@ManyToMany(mappedBy = "employees")
 	private Set<Project> projects = new HashSet<>();
 
+	@OneToMany(mappedBy = "owner")
+	private Set<Project> ownedProjects = new HashSet<>();
+
 	public Employee() {
 	}
 
@@ -161,14 +164,6 @@ public class Employee implements Serializable {
 		entry.setEmployee(null);
 	}
 
-	//
-	// public void detach() {
-	// for (LogbookEntry entry : new
-	// ArrayList<LogbookEntry>(getLogbookEntries())) {
-	// removeLogbookEntry(entry);
-	// }
-	// }
-	//
 	public Address getAddress() {
 		return address;
 	}
@@ -192,6 +187,14 @@ public class Employee implements Serializable {
 
 		project.getEmployees().add(this);
 		this.projects.add(project);
+	}
+
+	public void setOwnedProjects(Set<Project> ownedProjects) {
+		this.ownedProjects = ownedProjects;
+	}
+
+	public Set<Project> getOwnedProjects() {
+		return ownedProjects;
 	}
 
 }

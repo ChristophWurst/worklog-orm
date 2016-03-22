@@ -30,15 +30,15 @@ import org.springframework.stereotype.Component;
 class ProjectServiceImpl implements ProjectService {
 
 	@Inject
-	private ProjectRepository projectDao;
+	private ProjectRepository projectRepository;
 
 	public void setProjectDao(ProjectRepository projectDao) {
-		this.projectDao = projectDao;
+		this.projectRepository = projectDao;
 	}
 
 	@Override
 	public double getProjectCosts(Long id) {
-		Project p = projectDao.findAndLoadLogbookEntries(id);
+		Project p = projectRepository.findAndLoadLogbookEntries(id);
 		double costs = p.getEmployees().stream().mapToDouble((Employee empl) -> {
 			if (empl instanceof TemporaryEmployee) {
 				TemporaryEmployee tmp = (TemporaryEmployee) empl;
@@ -63,12 +63,17 @@ class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public List<Project> getAllProjects() {
-		return projectDao.findAll();
+		return projectRepository.findAll();
 	}
 
 	@Override
 	public Project getById(Long id) {
-		return projectDao.findOne(id);
+		return projectRepository.findOne(id);
+	}
+
+	@Override
+	public Project save(Project project) {
+		return projectRepository.save(project);
 	}
 
 }

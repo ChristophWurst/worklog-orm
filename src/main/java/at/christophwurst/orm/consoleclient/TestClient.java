@@ -92,20 +92,23 @@ public class TestClient implements Client {
 			private String promptFor(String name) {
 				System.out.print("Enter " + name + " please> ");
 				try {
-					return buff.readLine();
+					String val = buff.readLine();
+					return val.equals("") ? null : val;
 				} catch (IOException ex) {
-					return "";
+					return null;
 				}
 			}
 
 			@Override
-			public int getIntValue(String name) {
-				return Integer.parseInt(promptFor(name));
+			public Integer getIntValue(String name) {
+				String val = promptFor(name);
+				return val == null ? null : Integer.parseInt(val);
 			}
 
 			@Override
-			public long getLongValue(String name) {
-				return Long.parseLong(promptFor(name));
+			public Long getLongValue(String name) {
+				String val = promptFor(name);
+				return val == null ? null : Long.parseLong(val);
 			}
 
 			@Override
