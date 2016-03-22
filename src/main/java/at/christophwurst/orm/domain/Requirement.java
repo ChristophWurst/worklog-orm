@@ -28,7 +28,7 @@ public class Requirement implements Serializable {
 	@ManyToOne(optional = true, cascade = CascadeType.ALL)
 	private Sprint sprint;
 
-	@OneToMany(mappedBy = "requirement", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "requirement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Task> tasks = new HashSet<>();
 
 	public Requirement() {
@@ -92,6 +92,13 @@ public class Requirement implements Serializable {
 		}
 		tasks.add(task);
 		task.setRequirement(this);
+	}
+
+	public void removeTask(Task task) {
+		if (task != null) {
+			task.setRequirement(null);
+		}
+		tasks.remove(task);
 	}
 
 	@Override

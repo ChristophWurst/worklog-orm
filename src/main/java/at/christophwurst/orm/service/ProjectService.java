@@ -17,6 +17,8 @@
 package at.christophwurst.orm.service;
 
 import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.Task;
 import java.util.List;
 
 /**
@@ -29,8 +31,14 @@ public interface ProjectService {
 
 	public List<Project> getAllProjects();
 
-	public Project getById(Long id);
+	public Project getProjectById(Long id);
 
-	public Project save(Project project);
+	public Project saveProject(Project project);
+
+	public Requirement getRequirementById(Long id);
+
+	public Requirement saveRequirement(Requirement requirement);
+
+	public Task getTaskById(Long taskId);
 
 }

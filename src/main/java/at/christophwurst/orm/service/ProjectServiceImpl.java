@@ -23,6 +23,10 @@ import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.TemporaryEmployee;
 import java.util.List;
 import at.christophwurst.orm.dao.ProjectRepository;
+import at.christophwurst.orm.dao.RequirementRepository;
+import at.christophwurst.orm.dao.TaskRepository;
+import at.christophwurst.orm.domain.Requirement;
+import at.christophwurst.orm.domain.Task;
 import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +35,10 @@ class ProjectServiceImpl implements ProjectService {
 
 	@Inject
 	private ProjectRepository projectRepository;
+	@Inject
+	private RequirementRepository requirementRepository;
+	@Inject
+	private TaskRepository taskRepository;
 
 	public void setProjectDao(ProjectRepository projectDao) {
 		this.projectRepository = projectDao;
@@ -67,13 +75,28 @@ class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Project getById(Long id) {
+	public Project getProjectById(Long id) {
 		return projectRepository.findOne(id);
 	}
 
 	@Override
-	public Project save(Project project) {
+	public Project saveProject(Project project) {
 		return projectRepository.save(project);
+	}
+
+	@Override
+	public Requirement getRequirementById(Long id) {
+		return requirementRepository.findOne(id);
+	}
+
+	@Override
+	public Requirement saveRequirement(Requirement requirement) {
+		return requirementRepository.save(requirement);
+	}
+
+	@Override
+	public Task getTaskById(Long taskId) {
+		return taskRepository.findOne(taskId);
 	}
 
 }

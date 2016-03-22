@@ -20,6 +20,7 @@ import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Sprint;
+import at.christophwurst.orm.domain.Task;
 import at.christophwurst.orm.service.EmployeeService;
 import at.christophwurst.orm.service.ProjectService;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class ProjectCommands {
 
 		client.registerCommand("project:show", (consoleInterface) -> {
 			Long id = consoleInterface.getLongValue("project id");
-			Project pro = projectService.getById(id);
+			Project pro = projectService.getProjectById(id);
 			System.out.println(pro);
 		});
 
@@ -62,23 +63,23 @@ public class ProjectCommands {
 
 			Project project = new Project(name);
 
-			projectService.save(project);
+			projectService.saveProject(project);
 		});
 
 		client.registerCommand("project:owner", (consoleInterface) -> {
 			Long projectId = consoleInterface.getLongValue("project id");
 			Long employeeId = consoleInterface.getLongValue("employee id");
 
-			Project project = projectService.getById(projectId);
+			Project project = projectService.getProjectById(projectId);
 			Employee employee = employeeService.getById(employeeId);
 
 			project.setOwner(employee);
-			projectService.save(project);
+			projectService.saveProject(project);
 		});
 
 		client.registerCommand("project:employees", (consoleInterface) -> {
 			Long id = consoleInterface.getLongValue("project id");
-			projectService.getById(id).getEmployees().forEach(e -> {
+			projectService.getProjectById(id).getEmployees().forEach(e -> {
 				System.out.println(" - " + e.getId() + ": " + e);
 			});
 		});
@@ -87,30 +88,30 @@ public class ProjectCommands {
 			Long projectId = consoleInterface.getLongValue("project id");
 			Long employeeId = consoleInterface.getLongValue("employee id");
 
-			Project project = projectService.getById(projectId);
+			Project project = projectService.getProjectById(projectId);
 			Employee employee = employeeService.getById(employeeId);
 
 			project.addMember(employee);
-			projectService.save(project);
+			projectService.saveProject(project);
 		});
 
 		client.registerCommand("project:employee:remove", (consoleInterface) -> {
 			Long projectId = consoleInterface.getLongValue("project id");
 			Long employeeId = consoleInterface.getLongValue("employee id");
 
-			Project project = projectService.getById(projectId);
+			Project project = projectService.getProjectById(projectId);
 			Employee employee = employeeService.getById(employeeId);
 
 			project.removeMember(employee);
-			projectService.save(project);
+			projectService.saveProject(project);
 		});
 
 		client.registerCommand("project:requirements", (consoleInterface) -> {
 			Long id = consoleInterface.getLongValue("project id");
-			Project project = projectService.getById(id);
+			Project project = projectService.getProjectById(id);
 
 			project.getRequirements().forEach(r -> {
-				System.out.println(" - " + r);
+				System.out.println(" - " + r.getId() + ": " + r);
 			});
 		});
 
@@ -118,11 +119,51 @@ public class ProjectCommands {
 			Long id = consoleInterface.getLongValue("project id");
 			String shortDesc = consoleInterface.getStringValue("short description");
 
-			Project project = projectService.getById(id);
+			Project project = projectService.getProjectById(id);
 			Requirement requirement = new Requirement(shortDesc);
 
 			project.addRequirement(requirement);
-			projectService.save(project);
+			projectService.saveProject(project);
+		});
+
+		client.registerCommand("project:requirements", (consoleInterface) -> {
+			Long id = consoleInterface.getLongValue("project id");
+			Project project = projectService.getProjectById(id);
+
+			project.getRequirements().forEach(r -> {
+				System.out.println(" - " + r.getId() + ": " + r);
+			});
+		});
+
+		client.registerCommand("project:requirement:tasks", (consoleInterface) -> {
+			Long id = consoleInterface.getLongValue("requirement id");
+			Requirement requirement = projectService.getRequirementById(id);
+
+			requirement.getTasks().forEach(t -> {
+				System.out.println(" - " + t.getId() + ": " + t);
+			});
+		});
+
+		client.registerCommand("project:requirement:task:add", (consoleInterface) -> {
+			Long id = consoleInterface.getLongValue("requirement id");
+			String shortDescription = consoleInterface.getStringValue("short description");
+
+			Requirement requirement = projectService.getRequirementById(id);
+			Task task = new Task(shortDescription);
+
+			requirement.addTask(task);
+			projectService.saveRequirement(requirement);
+		});
+		
+		client.registerCommand("project:requirement:task:delete", (consoleInterface) -> {
+			Long requirementId = consoleInterface.getLongValue("requirement id");
+			Long taskId = consoleInterface.getLongValue("task id");
+
+			Requirement requirement = projectService.getRequirementById(requirementId);
+			Task task = projectService.getTaskById(taskId);
+
+			requirement.removeTask(task);
+			projectService.saveRequirement(requirement);
 		});
 
 		client.registerCommand("project:costs", (consoleInterface) -> {
@@ -132,7 +173,7 @@ public class ProjectCommands {
 
 		client.registerCommand("project:sprints", (consoleInterface) -> {
 			Long id = consoleInterface.getLongValue("project id");
-			Project p = projectService.getById(id);
+			Project p = projectService.getProjectById(id);
 			Set<Sprint> sprints = p.getSprints();
 			if (sprints == null) {
 				System.out.println("no sprints");
