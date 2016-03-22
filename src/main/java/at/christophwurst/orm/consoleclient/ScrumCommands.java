@@ -37,7 +37,7 @@ public class ScrumCommands {
 
 	public void registerCommands(Client client) {
 		client.registerCommand("scrum:burndown", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("Sprint ID");
+			Long id = consoleInterface.getValue("sprint id");
 			burnDownService.getBurnDownData(id).forEach((Date d, Float val) -> {
 				System.out.println("    - " + d + ": " + val);
 			});
