@@ -18,6 +18,7 @@ package at.christophwurst.orm.consoleclient;
 
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.service.EmployeeService;
 import at.christophwurst.orm.service.ProjectService;
@@ -101,6 +102,26 @@ public class ProjectCommands {
 			Employee employee = employeeService.getById(employeeId);
 
 			project.removeMember(employee);
+			projectService.save(project);
+		});
+
+		client.registerCommand("project:requirements", (consoleInterface) -> {
+			Long id = consoleInterface.getLongValue("project id");
+			Project project = projectService.getById(id);
+
+			project.getRequirements().forEach(r -> {
+				System.out.println(" - " + r);
+			});
+		});
+
+		client.registerCommand("project:requirement:add", (consoleInterface) -> {
+			Long id = consoleInterface.getLongValue("project id");
+			String shortDesc = consoleInterface.getStringValue("short description");
+
+			Project project = projectService.getById(id);
+			Requirement requirement = new Requirement(shortDesc);
+
+			project.addRequirement(requirement);
 			projectService.save(project);
 		});
 
