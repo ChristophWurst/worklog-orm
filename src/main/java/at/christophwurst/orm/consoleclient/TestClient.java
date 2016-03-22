@@ -63,15 +63,20 @@ public class TestClient implements CommandDispatcher {
 		commands.put(identifier, command);
 	}
 
+	private void printAvailableCommands() {
+		System.out.println("# Available commands:");
+		commands.keySet().stream().forEach((id) -> {
+			System.out.println(" - " + id);
+		});
+		System.out.println();
+	}
+
 	public void run() {
 		System.out.print("Scrum project test client started");
 
 		dbSeeder.seed();
 
-		System.out.println("# Available commands:");
-		commands.keySet().stream().forEach((id) -> {
-			System.out.println(" - " + id);
-		});
+		printAvailableCommands();
 
 		String cmd = "";
 		BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
@@ -83,6 +88,8 @@ public class TestClient implements CommandDispatcher {
 				if (commands.containsKey(cmd)) {
 					Command command = commands.get(cmd);
 					command.execute();
+				} else if (cmd.equals("?") || cmd.equals("help")) {
+					printAvailableCommands();
 				} else {
 					System.err.println("unknown command <" + cmd + ">");
 				}
