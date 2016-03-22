@@ -19,8 +19,8 @@ package at.christophwurst.orm.consoleclient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.inject.Inject;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -55,7 +55,7 @@ public class TestClient implements CommandDispatcher {
 	private final Map<String, Command> commands;
 
 	public TestClient() {
-		commands = new HashMap<>();
+		commands = new TreeMap<>();
 	}
 
 	@Override
@@ -80,6 +80,22 @@ public class TestClient implements CommandDispatcher {
 
 		String cmd = "";
 		BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
+		ConsoleInterface consoleInterface = new ConsoleInterface() {
+
+			private String promptFor(String name) {
+				System.out.print("Enter " + name + " please>");
+				try {
+					return buff.readLine();
+				} catch (IOException ex) {
+					return "";
+				}
+			}
+
+			@Override
+			public Long getValue(String name) {
+				return Long.parseLong(promptFor(name));
+			}
+		};
 		while (!cmd.equals("exit")) {
 			try {
 				System.out.println();
@@ -87,7 +103,7 @@ public class TestClient implements CommandDispatcher {
 				cmd = buff.readLine();
 				if (commands.containsKey(cmd)) {
 					Command command = commands.get(cmd);
-					command.execute();
+					command.execute(consoleInterface);
 				} else if (cmd.equals("?") || cmd.equals("help")) {
 					printAvailableCommands();
 				} else {

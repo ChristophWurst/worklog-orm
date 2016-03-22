@@ -20,8 +20,8 @@ package at.christophwurst.orm.consoleclient;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface Command {
+public interface ConsoleInterface {
 
-	void execute(ConsoleInterface consoleInterface);
+	Long getValue(String name);
 
 }

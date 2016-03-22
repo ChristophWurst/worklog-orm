@@ -44,7 +44,7 @@ public class ScrumCommands {
 	}
 
 	public void registerCommands(CommandDispatcher dispatcher) {
-		dispatcher.registerCommand("scrum:burndown", () -> {
+		dispatcher.registerCommand("scrum:burndown", (consoleInterface) -> {
 			System.out.println("# BurnDown charts:");
 			scrumService.getAllSprints().forEach((Sprint sprint) -> {
 				System.out.println("  - Sprint " + sprint);

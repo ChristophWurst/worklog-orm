@@ -16,6 +16,7 @@
  */
 package at.christophwurst.orm.consoleclient;
 
+import at.christophwurst.orm.domain.Project;
 import at.christophwurst.orm.service.ProjectService;
 import javax.inject.Inject;
 import org.springframework.stereotype.Component;
@@ -35,14 +36,20 @@ public class ProjectCommands {
 	}
 
 	public void registerCommands(CommandDispatcher dispatcher) {
-		dispatcher.registerCommand("project:list", () -> {
+		dispatcher.registerCommand("project:list", (consoleInterface) -> {
 			System.out.println("# Projects");
 			projectService.getAllProjects().forEach(p -> {
 				System.out.println(" - " + p);
 			});
 		});
+		
+		dispatcher.registerCommand("project:show", (consoleInterface) -> {
+			Long id = consoleInterface.getValue("id");
+			Project pro = projectService.getById(id);
+			System.out.println(pro);
+		});
 
-		dispatcher.registerCommand("project:costs", () -> {
+		dispatcher.registerCommand("project:costs", (consoleInterface) -> {
 			System.out.println("# Project costs:");
 			projectService.getProjectCosts().forEach((p, c) -> {
 				System.out.println(p + ": " + c);

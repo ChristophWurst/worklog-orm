@@ -30,4 +30,6 @@ public interface ProjectService {
 
 	public List<Project> getAllProjects();
 
+	public Project getById(Long id);
+
 }
