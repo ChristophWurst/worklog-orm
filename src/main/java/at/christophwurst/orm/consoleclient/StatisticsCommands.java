@@ -41,7 +41,7 @@ public class StatisticsCommands {
 
 	public void registerCommands(Client client) {
 		client.registerCommand("statistics:project:employee", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("project id");
+			Long id = consoleInterface.getLongValue("project id");
 			statisticsService.getEmployeeTimeOnProjectPerEmployee(id).forEach((Employee e, Long time) -> {
 				time = time / (1000 * 3600);
 				System.out.println("  - " + e + ": " + time + "h");
@@ -49,7 +49,7 @@ public class StatisticsCommands {
 		});
 
 		client.registerCommand("statistics:project:sprint", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("project id");
+			Long id = consoleInterface.getLongValue("project id");
 			statisticsService.getSprintTime(id).forEach((Sprint sprint, Long time) -> {
 				time = time / (1000 * 3600);
 				System.out.println("  - " + sprint + ": " + time + "h");
@@ -57,7 +57,7 @@ public class StatisticsCommands {
 		});
 
 		client.registerCommand("statistics:project:requirements", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("project id");
+			Long id = consoleInterface.getLongValue("project id");
 			statisticsService.getRequirementTime(id).forEach((Requirement r, Long time) -> {
 				time = time / (1000 * 3600);
 				System.out.println("  - " + r + ": " + time + "h");
@@ -65,7 +65,7 @@ public class StatisticsCommands {
 		});
 
 		client.registerCommand("statistics:employee:project", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("employee id");
+			Long id = consoleInterface.getLongValue("employee id");
 			statisticsService.getEmployeeTimeOnProject(id).forEach((Project proj, Long time) -> {
 				time = time / (1000 * 3600);
 				System.out.println("  - " + proj + ": " + time + "h");
@@ -73,7 +73,7 @@ public class StatisticsCommands {
 		});
 
 		client.registerCommand("statistics:employee:projectsprint", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("employee id");
+			Long id = consoleInterface.getLongValue("employee id");
 			statisticsService.getEmployeeTimeOnSprint(id).forEach((Project proj, Map<Sprint, Long> projStat) -> {
 				System.out.println("  - Project " + proj);
 				projStat.forEach((Sprint sprint, Long time) -> {

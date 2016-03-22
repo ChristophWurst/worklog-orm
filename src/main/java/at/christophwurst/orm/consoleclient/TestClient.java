@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-@Component("aaa")
+@Component()
 public class TestClient implements Client {
 
 	public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class TestClient implements Client {
 			context.register(AppConfig.class);
 			context.refresh();
 
-			Client client = context.getBean("aaa", Client.class);
+			Client client = context.getBean(Client.class);
 			System.out.println(client.getClass().getName());
 
 			ProjectCommands prc = context.getBean(ProjectCommands.class);
@@ -47,6 +47,8 @@ public class TestClient implements Client {
 			stc.registerCommands(client);
 			ScrumCommands scc = context.getBean(ScrumCommands.class);
 			scc.registerCommands(client);
+			EmployeeCommands emc = context.getBean(EmployeeCommands.class);
+			emc.registerCommands(client);
 
 			client.run();
 		}
@@ -77,7 +79,7 @@ public class TestClient implements Client {
 
 	@Override
 	public void run() {
-		System.out.print("Scrum project test client started");
+		System.out.println("Scrum project test client started");
 
 		dbSeeder.seed();
 
@@ -97,9 +99,20 @@ public class TestClient implements Client {
 			}
 
 			@Override
-			public Long getValue(String name) {
+			public int getIntValue(String name) {
+				return Integer.parseInt(promptFor(name));
+			}
+
+			@Override
+			public long getLongValue(String name) {
 				return Long.parseLong(promptFor(name));
 			}
+
+			@Override
+			public String getStringValue(String name) {
+				return promptFor(name);
+			}
+
 		};
 		while (!cmd.equals("exit")) {
 			try {

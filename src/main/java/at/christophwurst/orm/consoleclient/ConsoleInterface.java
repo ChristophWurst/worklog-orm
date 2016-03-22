@@ -22,6 +22,10 @@ package at.christophwurst.orm.consoleclient;
  */
 public interface ConsoleInterface {
 
-	Long getValue(String name);
+	int getIntValue(String name);
+
+	long getLongValue(String name);
+
+	String getStringValue(String name);
 
 }

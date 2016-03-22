@@ -14,34 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.consoleclient;
+package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.service.BurnDownService;
-import java.util.Date;
-import javax.inject.Inject;
-import org.springframework.stereotype.Component;
+import at.christophwurst.orm.domain.Employee;
+import java.util.List;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-@Component
-public class ScrumCommands {
+public interface EmployeeService {
 
-	@Inject
-	private BurnDownService burnDownService;
+	public List<Employee> getAll();
 
-	public void setBurnDownService(BurnDownService burnDownService) {
-		this.burnDownService = burnDownService;
-	}
+	public Employee getById(Long id);
 
-	public void registerCommands(Client client) {
-		client.registerCommand("scrum:burndown", (consoleInterface) -> {
-			Long id = consoleInterface.getLongValue("sprint id");
-			burnDownService.getBurnDownData(id).forEach((Date d, Float val) -> {
-				System.out.println("    - " + d + ": " + val);
-			});
-		});
-	}
+	public Employee save(Employee employee);
 
 }
