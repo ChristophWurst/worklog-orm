@@ -41,25 +41,23 @@ public class ProjectCommands {
 		client.registerCommand("project:list", (consoleInterface) -> {
 			System.out.println("# Projects");
 			projectService.getAllProjects().forEach(p -> {
-				System.out.println(" - " + p);
+				System.out.println(" - " + p.getId() + ": " + p);
 			});
 		});
 
 		client.registerCommand("project:show", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("id");
+			Long id = consoleInterface.getValue("project id");
 			Project pro = projectService.getById(id);
 			System.out.println(pro);
 		});
 
 		client.registerCommand("project:costs", (consoleInterface) -> {
-			System.out.println("# Project costs:");
-			projectService.getProjectCosts().forEach((p, c) -> {
-				System.out.println(p + ": " + c);
-			});
+			Long id = consoleInterface.getValue("project id");
+			System.out.println(projectService.getProjectCosts(id));
 		});
 
 		client.registerCommand("project:sprints", (consoleInterface) -> {
-			Long id = consoleInterface.getValue("Project ID");
+			Long id = consoleInterface.getValue("project id");
 			Project p = projectService.getById(id);
 			Set<Sprint> sprints = p.getSprints();
 			if (sprints == null) {

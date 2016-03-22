@@ -23,7 +23,11 @@ public class CommandExecutorImpl implements CommandExecutor {
 
 	@Override
 	public void execute(Command cmd, ConsoleInterface consoleInterface) {
-		cmd.execute(consoleInterface);
+		try {
+			cmd.execute(consoleInterface);
+		} catch (RuntimeException ex) {
+			System.err.println("Exception caught: " + ex.getMessage());
+		}
 	}
 
 }

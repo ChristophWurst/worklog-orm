@@ -21,6 +21,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -33,5 +34,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 	@EntityGraph(value = "graph.Project.logbookEntries", type = EntityGraph.EntityGraphType.LOAD)
 	@Query("from Project")
 	public List<Project> findAndLoadLogbookEntries();
+
+	@EntityGraph(value = "graph.Project.logbookEntries", type = EntityGraph.EntityGraphType.LOAD)
+	@Query("from Project where id = :id")
+	public Project findAndLoadLogbookEntries(@Param("id") Long id);
 
 }

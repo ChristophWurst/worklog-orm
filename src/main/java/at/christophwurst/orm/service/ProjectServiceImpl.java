@@ -39,31 +39,27 @@ class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Map<Project, Double> getProjectCosts() {
-		Map<Project, Double> result = new HashMap<>();
-		List<Project> projects = projectDao.findAndLoadLogbookEntries();
-		projects.forEach((Project p) -> {
-			double costs = p.getEmployees().stream().mapToDouble((Employee empl) -> {
-				if (empl instanceof TemporaryEmployee) {
-					TemporaryEmployee tmp = (TemporaryEmployee) empl;
-					long time = p.getRequirements().stream().mapToLong((r) -> {
-						return r.getTasks().stream().mapToLong((t) -> {
-							return t.getLogbookEntries().stream().filter((l) -> {
-								return l.getEmployee().equals(empl);
-							}).mapToLong(LogbookEntry::getTotalTime).sum();
-						}).sum();
+	public double getProjectCosts(Long id) {
+		Project p = projectDao.findAndLoadLogbookEntries(id);
+		double costs = p.getEmployees().stream().mapToDouble((Employee empl) -> {
+			if (empl instanceof TemporaryEmployee) {
+				TemporaryEmployee tmp = (TemporaryEmployee) empl;
+				long time = p.getRequirements().stream().mapToLong((r) -> {
+					return r.getTasks().stream().mapToLong((t) -> {
+						return t.getLogbookEntries().stream().filter((l) -> {
+							return l.getEmployee().equals(empl);
+						}).mapToLong(LogbookEntry::getTotalTime).sum();
 					}).sum();
-					return (float) (time / (1000 * 3600) * tmp.getHourlyRate());
-				}
-				if (empl instanceof PermanentEmployee) {
-					PermanentEmployee perm = (PermanentEmployee) empl;
-					return (float) (perm.getSalary() / (1000 * 3600));
-				}
-				return 0f;
-			}).sum();
-			result.put(p, costs);
-		});
-		return result;
+				}).sum();
+				return (float) (time / (1000 * 3600) * tmp.getHourlyRate());
+			}
+			if (empl instanceof PermanentEmployee) {
+				PermanentEmployee perm = (PermanentEmployee) empl;
+				return (float) (perm.getSalary() / (1000 * 3600));
+			}
+			return 0f;
+		}).sum();
+		return costs;
 
 	}
 

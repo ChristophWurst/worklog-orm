@@ -18,7 +18,6 @@ package at.christophwurst.orm.service;
 
 import at.christophwurst.orm.domain.Project;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -26,7 +25,7 @@ import java.util.Map;
  */
 public interface ProjectService {
 
-	public Map<Project, Double> getProjectCosts();
+	public double getProjectCosts(Long id);
 
 	public List<Project> getAllProjects();
 

@@ -88,7 +88,7 @@ public class TestClient implements Client {
 		ConsoleInterface consoleInterface = new ConsoleInterface() {
 
 			private String promptFor(String name) {
-				System.out.print("Enter " + name + " please>");
+				System.out.print("Enter " + name + " please> ");
 				try {
 					return buff.readLine();
 				} catch (IOException ex) {
