@@ -22,7 +22,6 @@ import at.christophwurst.orm.service.ProjectService;
 import java.util.Set;
 import javax.inject.Inject;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -38,28 +37,28 @@ public class ProjectCommands {
 		this.projectService = projectService;
 	}
 
-	public void registerCommands(CommandDispatcher dispatcher) {
-		dispatcher.registerCommand("project:list", (consoleInterface) -> {
+	public void registerCommands(Client client) {
+		client.registerCommand("project:list", (consoleInterface) -> {
 			System.out.println("# Projects");
 			projectService.getAllProjects().forEach(p -> {
 				System.out.println(" - " + p);
 			});
 		});
 
-		dispatcher.registerCommand("project:show", (consoleInterface) -> {
+		client.registerCommand("project:show", (consoleInterface) -> {
 			Long id = consoleInterface.getValue("id");
 			Project pro = projectService.getById(id);
 			System.out.println(pro);
 		});
 
-		dispatcher.registerCommand("project:costs", (consoleInterface) -> {
+		client.registerCommand("project:costs", (consoleInterface) -> {
 			System.out.println("# Project costs:");
 			projectService.getProjectCosts().forEach((p, c) -> {
 				System.out.println(p + ": " + c);
 			});
 		});
 
-		dispatcher.registerCommand("project:sprints", (consoleInterface) -> {
+		client.registerCommand("project:sprints", (consoleInterface) -> {
 			Long id = consoleInterface.getValue("Project ID");
 			Project p = projectService.getById(id);
 			Set<Sprint> sprints = p.getSprints();

@@ -16,9 +16,7 @@
  */
 package at.christophwurst.orm.consoleclient;
 
-import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.service.BurnDownService;
-import at.christophwurst.orm.service.ScrumService;
 import java.util.Date;
 import javax.inject.Inject;
 import org.springframework.stereotype.Component;
@@ -37,8 +35,8 @@ public class ScrumCommands {
 		this.burnDownService = burnDownService;
 	}
 
-	public void registerCommands(CommandDispatcher dispatcher) {
-		dispatcher.registerCommand("scrum:burndown", (consoleInterface) -> {
+	public void registerCommands(Client client) {
+		client.registerCommand("scrum:burndown", (consoleInterface) -> {
 			Long id = consoleInterface.getValue("Sprint ID");
 			burnDownService.getBurnDownData(id).forEach((Date d, Float val) -> {
 				System.out.println("    - " + d + ": " + val);

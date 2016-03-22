@@ -20,8 +20,10 @@ package at.christophwurst.orm.consoleclient;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public interface Client extends CommandDispatcher {
+public interface Client {
 
 	void run();
+
+	void registerCommand(String identifier, Command command);
 
 }

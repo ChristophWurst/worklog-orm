@@ -39,8 +39,8 @@ public class StatisticsCommands {
 		this.statisticsService = statisticsService;
 	}
 
-	public void registerCommands(CommandDispatcher dispatcher) {
-		dispatcher.registerCommand("statistics:project:employee", (consoleInterface) -> {
+	public void registerCommands(Client client) {
+		client.registerCommand("statistics:project:employee", (consoleInterface) -> {
 			statisticsService.getEmployeeTimeOnProjectPerEmployee().forEach((Project p, Map<Employee, Long> stat) -> {
 				System.out.println("# Project " + p);
 				stat.forEach((Employee e, Long time) -> {
@@ -50,7 +50,7 @@ public class StatisticsCommands {
 			});
 		});
 
-		dispatcher.registerCommand("statistics:project:sprint", (consoleInterface) -> {
+		client.registerCommand("statistics:project:sprint", (consoleInterface) -> {
 			statisticsService.getSprintTimePerProject().forEach((Project p, Map<Sprint, Long> stat) -> {
 				System.out.println("# Project " + p);
 				stat.forEach((Sprint sprint, Long time) -> {
@@ -60,7 +60,7 @@ public class StatisticsCommands {
 			});
 		});
 
-		dispatcher.registerCommand("statistics:project:requirements", (consoleInterface) -> {
+		client.registerCommand("statistics:project:requirements", (consoleInterface) -> {
 			statisticsService.getRequirementTimePerProject().forEach((Project p, Map<Requirement, Long> stat) -> {
 				System.out.println("# Project " + p);
 				stat.forEach((Requirement r, Long time) -> {
@@ -70,7 +70,7 @@ public class StatisticsCommands {
 			});
 		});
 
-		dispatcher.registerCommand("statistics:employee:project", (consoleInterface) -> {
+		client.registerCommand("statistics:employee:project", (consoleInterface) -> {
 			statisticsService.getEmployeeTimeOnProject().forEach((Employee empl, Map<Project, Long> stat) -> {
 				System.out.println("# Employee " + empl);
 				stat.forEach((Project proj, Long time) -> {
@@ -80,7 +80,7 @@ public class StatisticsCommands {
 			});
 		});
 
-		dispatcher.registerCommand("statistics:employee:projectsprint", (consoleInterface) -> {
+		client.registerCommand("statistics:employee:projectsprint", (consoleInterface) -> {
 			statisticsService.getEmployeeTimeOnSprint().forEach((Employee empl, Map<Project, Map<Sprint, Long>> stat) -> {
 				System.out.println("# Employee " + empl);
 				stat.forEach((Project proj, Map<Sprint, Long> projStat) -> {
