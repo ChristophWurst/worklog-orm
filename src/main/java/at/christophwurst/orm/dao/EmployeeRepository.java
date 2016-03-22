@@ -16,11 +16,11 @@
  */
 package at.christophwurst.orm.dao;
 
-import java.util.List;
 import at.christophwurst.orm.domain.Employee;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	@EntityGraph("graph.Employee.logbookEntries")
-	@Query("from Employee")
-	public List<Employee> getEmployeesAndLogbookEntries();
+	@Query("from Employee where id = :id")
+	public Employee getEmployeeAndLogbookEntries(@Param("id") Long id);
 
 }

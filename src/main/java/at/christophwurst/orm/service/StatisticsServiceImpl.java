@@ -33,20 +33,22 @@ import org.springframework.stereotype.Component;
 class StatisticsServiceImpl implements StatisticsService {
 
 	@Inject
-	private ProjectRepository projectDao;
+	private ProjectRepository projectRepository;
 	@Inject
-	private EmployeeRepository employeeDao;
+	private EmployeeRepository employeeRepository;
 
-	public void setProjectDao(ProjectRepository projectDao) {
-		this.projectDao = projectDao;
+	public void setProjectRepository(ProjectRepository projectDao) {
+		this.projectRepository = projectDao;
 	}
 
-	public void setEmployeeDao(EmployeeRepository employeeDao) {
-		this.employeeDao = employeeDao;
+	public void setEmployeeRepository(EmployeeRepository employeeDao) {
+		this.employeeRepository = employeeDao;
 	}
 
-	private Map<Project, Long> getEmployeeTimeOnProject(Employee empl) {
+	@Override
+	public Map<Project, Long> getEmployeeTimeOnProject(Long employeeId) {
 		Map<Project, Long> result = new HashMap<>();
+		Employee empl = employeeRepository.getEmployeeAndLogbookEntries(employeeId);
 		empl.getProjects().forEach((Project proj) -> {
 			Long time = proj.getRequirements().stream().mapToLong((Requirement req) -> {
 				return req.getTasks().stream().mapToLong((Task tsk) -> {
@@ -54,15 +56,6 @@ class StatisticsServiceImpl implements StatisticsService {
 				}).sum();
 			}).sum();
 			result.put(proj, time);
-		});
-		return result;
-	}
-
-	@Override
-	public Map<Employee, Map<Project, Long>> getEmployeeTimeOnProject() {
-		Map<Employee, Map<Project, Long>> result = new HashMap<>();
-		employeeDao.getEmployeesAndLogbookEntries().forEach((Employee empl) -> {
-			result.put(empl, getEmployeeTimeOnProject(empl));
 		});
 		return result;
 	}
@@ -86,8 +79,10 @@ class StatisticsServiceImpl implements StatisticsService {
 		return result;
 	}
 
-	private Map<Project, Map<Sprint, Long>> getEmployeeTimeOnSprint(Employee empl) {
+	@Override
+	public Map<Project, Map<Sprint, Long>> getEmployeeTimeOnSprint(Long employeeId) {
 		Map<Project, Map<Sprint, Long>> result = new HashMap<>();
+		Employee empl = employeeRepository.getEmployeeAndLogbookEntries(employeeId);
 		empl.getProjects().forEach((Project proj) -> {
 			result.put(proj, getEmployeeTimeOnSprints(proj));
 		});
@@ -95,22 +90,14 @@ class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	@Override
-	public Map<Employee, Map<Project, Map<Sprint, Long>>> getEmployeeTimeOnSprint() {
-		Map<Employee, Map<Project, Map<Sprint, Long>>> result = new HashMap<>();
-		employeeDao.getEmployeesAndLogbookEntries().forEach((Employee empl) -> {
-			result.put(empl, getEmployeeTimeOnSprint(empl));
-		});
-		return result;
-	}
-
-	private Map<Employee, Long> getEmployeeTimeOnProject(Project p) {
+	public Map<Employee, Long> getEmployeeTimeOnProjectPerEmployee(Long projectId) {
 		Map<Employee, Long> result = new HashMap<>();
+		Project p = projectRepository.findAndLoadLogbookEntries(projectId);
 		p.getRequirements().forEach((Requirement req) -> {
 			req.getTasks().forEach((Task tsk) -> {
 				tsk.getLogbookEntries().forEach((LogbookEntry entry) -> {
 					Employee empl = entry.getEmployee();
 					Long currValue = 0L;
-					System.out.println(empl);
 					if (result.containsKey(empl)) {
 						currValue = result.remove(empl);
 					}
@@ -119,21 +106,13 @@ class StatisticsServiceImpl implements StatisticsService {
 				});
 			});
 		});
-		System.out.println(result.size());
 		return result;
 	}
 
 	@Override
-	public Map<Project, Map<Employee, Long>> getEmployeeTimeOnProjectPerEmployee() {
-		Map<Project, Map<Employee, Long>> result = new HashMap<>();
-		projectDao.findAndLoadLogbookEntries().forEach((Project p) -> {
-			result.put(p, getEmployeeTimeOnProject(p));
-		});
-		return result;
-	}
-
-	private Map<Sprint, Long> getSprintTimeOnProject(Project p) {
+	public Map<Sprint, Long> getSprintTime(Long projectId) {
 		Map<Sprint, Long> result = new HashMap<>();
+		Project p = projectRepository.findAndLoadLogbookEntries(projectId);
 		p.getRequirements().forEach((Requirement req) -> {
 			if (req.getSprint() == null) {
 				// Nothing to do
@@ -152,35 +131,18 @@ class StatisticsServiceImpl implements StatisticsService {
 			currValue += time;
 			result.put(sprint, currValue);
 		});
-
 		return result;
 	}
 
 	@Override
-	public Map<Project, Map<Sprint, Long>> getSprintTimePerProject() {
-		Map<Project, Map<Sprint, Long>> result = new HashMap<>();
-		projectDao.findAndLoadLogbookEntries().forEach((Project p) -> {
-			result.put(p, getSprintTimeOnProject(p));
-		});
-		return result;
-	}
-
-	private Map<Requirement, Long> getRequirementTimeOnProject(Project p) {
+	public Map<Requirement, Long> getRequirementTime(Long projectId) {
 		Map<Requirement, Long> result = new HashMap<>();
+		Project p = projectRepository.findAndLoadLogbookEntries(projectId);
 		p.getRequirements().forEach((Requirement req) -> {
 			Long time = req.getTasks().stream().mapToLong((Task tsk) -> {
 				return tsk.getLogbookEntries().stream().mapToLong(LogbookEntry::getTotalTime).sum();
 			}).sum();
 			result.put(req, time);
-		});
-		return result;
-	}
-
-	@Override
-	public Map<Project, Map<Requirement, Long>> getRequirementTimePerProject() {
-		Map<Project, Map<Requirement, Long>> result = new HashMap<>();
-		projectDao.findAndLoadLogbookEntries().forEach((Project p) -> {
-			result.put(p, getRequirementTimeOnProject(p));
 		});
 		return result;
 	}

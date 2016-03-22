@@ -28,14 +28,14 @@ import java.util.Map;
  */
 public interface StatisticsService {
 
-	public Map<Employee, Map<Project, Long>> getEmployeeTimeOnProject();
+	public Map<Project, Long> getEmployeeTimeOnProject(Long employeeId);
 
-	public Map<Employee, Map<Project, Map<Sprint, Long>>> getEmployeeTimeOnSprint();
+	public Map<Project, Map<Sprint, Long>> getEmployeeTimeOnSprint(Long employeeId);
 
-	public Map<Project, Map<Employee, Long>> getEmployeeTimeOnProjectPerEmployee();
+	public Map<Employee, Long> getEmployeeTimeOnProjectPerEmployee(Long projectId);
 
-	public Map<Project, Map<Sprint, Long>> getSprintTimePerProject();
+	public Map<Sprint, Long> getSprintTime(Long projectId);
 
-	public Map<Project, Map<Requirement, Long>> getRequirementTimePerProject();
+	public Map<Requirement, Long> getRequirementTime(Long projectId);
 
 }

@@ -41,57 +41,48 @@ public class StatisticsCommands {
 
 	public void registerCommands(Client client) {
 		client.registerCommand("statistics:project:employee", (consoleInterface) -> {
-			statisticsService.getEmployeeTimeOnProjectPerEmployee().forEach((Project p, Map<Employee, Long> stat) -> {
-				System.out.println("# Project " + p);
-				stat.forEach((Employee e, Long time) -> {
-					time = time / (1000 * 3600);
-					System.out.println("  - " + e + ": " + time + "h");
-				});
+			Long id = consoleInterface.getValue("project id");
+			statisticsService.getEmployeeTimeOnProjectPerEmployee(id).forEach((Employee e, Long time) -> {
+				time = time / (1000 * 3600);
+				System.out.println("  - " + e + ": " + time + "h");
 			});
 		});
 
 		client.registerCommand("statistics:project:sprint", (consoleInterface) -> {
-			statisticsService.getSprintTimePerProject().forEach((Project p, Map<Sprint, Long> stat) -> {
-				System.out.println("# Project " + p);
-				stat.forEach((Sprint sprint, Long time) -> {
-					time = time / (1000 * 3600);
-					System.out.println("  - " + sprint + ": " + time + "h");
-				});
+			Long id = consoleInterface.getValue("project id");
+			statisticsService.getSprintTime(id).forEach((Sprint sprint, Long time) -> {
+				time = time / (1000 * 3600);
+				System.out.println("  - " + sprint + ": " + time + "h");
 			});
 		});
 
 		client.registerCommand("statistics:project:requirements", (consoleInterface) -> {
-			statisticsService.getRequirementTimePerProject().forEach((Project p, Map<Requirement, Long> stat) -> {
-				System.out.println("# Project " + p);
-				stat.forEach((Requirement r, Long time) -> {
-					time = time / (1000 * 3600);
-					System.out.println("  - " + r + ": " + time + "h");
-				});
+			Long id = consoleInterface.getValue("project id");
+			statisticsService.getRequirementTime(id).forEach((Requirement r, Long time) -> {
+				time = time / (1000 * 3600);
+				System.out.println("  - " + r + ": " + time + "h");
 			});
 		});
 
 		client.registerCommand("statistics:employee:project", (consoleInterface) -> {
-			statisticsService.getEmployeeTimeOnProject().forEach((Employee empl, Map<Project, Long> stat) -> {
-				System.out.println("# Employee " + empl);
-				stat.forEach((Project proj, Long time) -> {
-					time = time / (1000 * 3600);
-					System.out.println("  - " + proj + ": " + time + "h");
-				});
+			Long id = consoleInterface.getValue("employee id");
+			statisticsService.getEmployeeTimeOnProject(id).forEach((Project proj, Long time) -> {
+				time = time / (1000 * 3600);
+				System.out.println("  - " + proj + ": " + time + "h");
 			});
 		});
 
 		client.registerCommand("statistics:employee:projectsprint", (consoleInterface) -> {
-			statisticsService.getEmployeeTimeOnSprint().forEach((Employee empl, Map<Project, Map<Sprint, Long>> stat) -> {
-				System.out.println("# Employee " + empl);
-				stat.forEach((Project proj, Map<Sprint, Long> projStat) -> {
-					System.out.println("  - Project " + proj);
-					projStat.forEach((Sprint sprint, Long time) -> {
-						time = time / (1000 * 3600);
-						System.out.println("    - Sprint " + sprint + ": " + time + "h");
-					});
+			Long id = consoleInterface.getValue("employee id");
+			statisticsService.getEmployeeTimeOnSprint(id).forEach((Project proj, Map<Sprint, Long> projStat) -> {
+				System.out.println("  - Project " + proj);
+				projStat.forEach((Sprint sprint, Long time) -> {
+					time = time / (1000 * 3600);
+					System.out.println("    - Sprint " + sprint + ": " + time + "h");
 				});
 			});
 		});
+
 	}
 
 }
