@@ -37,8 +37,8 @@ class BurnDownServiceImpl implements BurnDownService {
 	@Inject
 	private SprintRepository sprintRepository;
 
-	public void setSprintDao(SprintRepository sprintDao) {
-		this.sprintRepository = sprintDao;
+	public void setSprintRepository(SprintRepository sprintRepository) {
+		this.sprintRepository = sprintRepository;
 	}
 
 	private Date stripDate(Date date) {
