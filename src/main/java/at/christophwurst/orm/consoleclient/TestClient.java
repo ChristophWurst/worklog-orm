@@ -30,15 +30,16 @@ import org.springframework.stereotype.Component;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-@Component
-public class TestClient implements CommandDispatcher {
+@Component("aaa")
+public class TestClient implements Client {
 
 	public static void main(String[] args) {
 		try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
 			context.register(AppConfig.class);
 			context.refresh();
 
-			TestClient client = context.getBean(TestClient.class);
+			Client client = context.getBean("aaa", Client.class);
+			System.out.println(client.getClass().getName());
 
 			ProjectCommands prc = context.getBean(ProjectCommands.class);
 			prc.registerCommands(client);
@@ -53,6 +54,8 @@ public class TestClient implements CommandDispatcher {
 
 	@Inject
 	private DbSeeder dbSeeder;
+	@Inject
+	private CommandExecutor commandExecutor;
 	private final Map<String, Command> commands;
 
 	public TestClient() {
@@ -72,11 +75,7 @@ public class TestClient implements CommandDispatcher {
 		System.out.println();
 	}
 
-	public void runCommand(String id, ConsoleInterface consoleInterface) {
-		Command cmd = commands.get(id);
-		cmd.execute(consoleInterface);
-	}
-
+	@Override
 	public void run() {
 		System.out.print("Scrum project test client started");
 
@@ -108,7 +107,7 @@ public class TestClient implements CommandDispatcher {
 				System.out.print("> ");
 				cmd = buff.readLine();
 				if (commands.containsKey(cmd)) {
-					runCommand(cmd, consoleInterface);
+					commandExecutor.execute(commands.get(cmd), consoleInterface);
 				} else if (cmd.equals("?") || cmd.equals("help")) {
 					printAvailableCommands();
 				} else {

@@ -30,16 +30,16 @@ public class JpaInterceptor {
 		this.entityManagerFactory = emFactory;
 	}
 
-	@Around("execution(public * at.christophwurst.orm.consoleclient.TestClient.runCommand())")
+	@Around("execution(* at.christophwurst.orm.consoleclient.CommandExecutor.execute(..))")
 	public Object holdEntityManger(ProceedingJoinPoint pjp) throws Throwable {
-		System.out.println("#########################################");
-		if (entityManagerFactory == null)
+		if (entityManagerFactory == null) {
 			throw new IllegalArgumentException("Property 'entityManagerFactory' is required");
+		}
 
 		boolean participate = false;
-		if (TransactionSynchronizationManager.hasResource(entityManagerFactory))
+		if (TransactionSynchronizationManager.hasResource(entityManagerFactory)) {
 			participate = true;
-		else {
+		} else {
 			logger.trace("Opening EntityManager");
 			JPAUtil.openEntityManager(entityManagerFactory);
 		}
