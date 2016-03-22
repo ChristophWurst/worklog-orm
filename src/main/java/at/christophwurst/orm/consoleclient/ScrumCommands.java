@@ -31,13 +31,7 @@ import org.springframework.stereotype.Component;
 public class ScrumCommands {
 
 	@Inject
-	private ScrumService scrumService;
-	@Inject
 	private BurnDownService burnDownService;
-
-	public void setScrumService(ScrumService scrumService) {
-		this.scrumService = scrumService;
-	}
 
 	public void setBurnDownService(BurnDownService burnDownService) {
 		this.burnDownService = burnDownService;
@@ -45,12 +39,9 @@ public class ScrumCommands {
 
 	public void registerCommands(CommandDispatcher dispatcher) {
 		dispatcher.registerCommand("scrum:burndown", (consoleInterface) -> {
-			System.out.println("# BurnDown charts:");
-			scrumService.getAllSprints().forEach((Sprint sprint) -> {
-				System.out.println("  - Sprint " + sprint);
-				burnDownService.getBurnDownData(sprint).forEach((Date d, Float val) -> {
-					System.out.println("    - " + d + ": " + val);
-				});
+			Long id = consoleInterface.getValue("Sprint ID");
+			burnDownService.getBurnDownData(id).forEach((Date d, Float val) -> {
+				System.out.println("    - " + d + ": " + val);
 			});
 		});
 	}

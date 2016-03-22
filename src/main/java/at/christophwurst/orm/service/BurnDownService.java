@@ -16,7 +16,6 @@
  */
 package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.domain.Sprint;
 import java.util.Date;
 import java.util.Map;
 
@@ -26,6 +25,6 @@ import java.util.Map;
  */
 public interface BurnDownService {
 
-	public Map<Date, Float> getBurnDownData(Sprint sprint);
+	public Map<Date, Float> getBurnDownData(Long id);
 
 }

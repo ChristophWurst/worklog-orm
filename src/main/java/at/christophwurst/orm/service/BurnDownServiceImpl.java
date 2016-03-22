@@ -35,10 +35,10 @@ import org.springframework.stereotype.Component;
 class BurnDownServiceImpl implements BurnDownService {
 
 	@Inject
-	private SprintRepository sprintDao;
+	private SprintRepository sprintRepository;
 
 	public void setSprintDao(SprintRepository sprintDao) {
-		this.sprintDao = sprintDao;
+		this.sprintRepository = sprintDao;
 	}
 
 	private Date stripDate(Date date) {
@@ -52,9 +52,9 @@ class BurnDownServiceImpl implements BurnDownService {
 	}
 
 	@Override
-	public Map<Date, Float> getBurnDownData(Sprint sprint) {
+	public Map<Date, Float> getBurnDownData(Long sprintId) {
 		Map<Date, Float> result = new HashMap<>();
-		sprint = sprintDao.getSprintAndWorklogs(sprint);
+		Sprint sprint = sprintRepository.getSprintAndWorklogs(sprintId);
 
 		int totalTime = sprint.getRequirements().stream().mapToInt((s) -> {
 			return s.getTasks().stream().mapToInt(Task::getEstimatedTime).sum();

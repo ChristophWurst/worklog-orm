@@ -17,9 +17,12 @@
 package at.christophwurst.orm.consoleclient;
 
 import at.christophwurst.orm.domain.Project;
+import at.christophwurst.orm.domain.Sprint;
 import at.christophwurst.orm.service.ProjectService;
+import java.util.Set;
 import javax.inject.Inject;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -42,7 +45,7 @@ public class ProjectCommands {
 				System.out.println(" - " + p);
 			});
 		});
-		
+
 		dispatcher.registerCommand("project:show", (consoleInterface) -> {
 			Long id = consoleInterface.getValue("id");
 			Project pro = projectService.getById(id);
@@ -54,6 +57,19 @@ public class ProjectCommands {
 			projectService.getProjectCosts().forEach((p, c) -> {
 				System.out.println(p + ": " + c);
 			});
+		});
+
+		dispatcher.registerCommand("project:sprints", (consoleInterface) -> {
+			Long id = consoleInterface.getValue("Project ID");
+			Project p = projectService.getById(id);
+			Set<Sprint> sprints = p.getSprints();
+			if (sprints == null) {
+				System.out.println("no sprints");
+			} else {
+				sprints.stream().forEach((s) -> {
+					System.out.println(" - " + s);
+				});
+			}
 		});
 	}
 

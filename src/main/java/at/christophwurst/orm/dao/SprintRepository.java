@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
 public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
 	@EntityGraph(value = "graph.Sprint.logbookEntries")
-	@Query("from Sprint s where s = :sprint")
-	public Sprint getSprintAndWorklogs(@Param("sprint") Sprint sprint);
+	@Query("from Sprint s where s.id = :id")
+	public Sprint getSprintAndWorklogs(@Param("id") Long id);
 
 }

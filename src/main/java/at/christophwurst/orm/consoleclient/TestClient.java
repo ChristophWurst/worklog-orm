@@ -16,14 +16,14 @@
  */
 package at.christophwurst.orm.consoleclient;
 
+import at.christophwurst.orm.config.AppConfig;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.inject.Inject;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,16 +34,17 @@ import org.springframework.stereotype.Component;
 public class TestClient implements CommandDispatcher {
 
 	public static void main(String[] args) {
-		try (AbstractApplicationContext factory = new ClassPathXmlApplicationContext(
-			"at/christophwurst/worklog/config/spring-config.xml")) {
+		try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+			context.register(AppConfig.class);
+			context.refresh();
 
-			TestClient client = factory.getBean(TestClient.class);
+			TestClient client = context.getBean(TestClient.class);
 
-			ProjectCommands prc = factory.getBean(ProjectCommands.class);
+			ProjectCommands prc = context.getBean(ProjectCommands.class);
 			prc.registerCommands(client);
-			StatisticsCommands stc = factory.getBean(StatisticsCommands.class);
+			StatisticsCommands stc = context.getBean(StatisticsCommands.class);
 			stc.registerCommands(client);
-			ScrumCommands scc = factory.getBean(ScrumCommands.class);
+			ScrumCommands scc = context.getBean(ScrumCommands.class);
 			scc.registerCommands(client);
 
 			client.run();
@@ -69,6 +70,11 @@ public class TestClient implements CommandDispatcher {
 			System.out.println(" - " + id);
 		});
 		System.out.println();
+	}
+
+	public void runCommand(String id, ConsoleInterface consoleInterface) {
+		Command cmd = commands.get(id);
+		cmd.execute(consoleInterface);
 	}
 
 	public void run() {
@@ -102,8 +108,7 @@ public class TestClient implements CommandDispatcher {
 				System.out.print("> ");
 				cmd = buff.readLine();
 				if (commands.containsKey(cmd)) {
-					Command command = commands.get(cmd);
-					command.execute(consoleInterface);
+					runCommand(cmd, consoleInterface);
 				} else if (cmd.equals("?") || cmd.equals("help")) {
 					printAvailableCommands();
 				} else {
