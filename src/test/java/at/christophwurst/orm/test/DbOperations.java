@@ -23,7 +23,7 @@ import com.ninja_squad.dbsetup.operation.Operation;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public class DbOperations {
+public abstract class DbOperations {
 
 	public static final Operation PREPARE_DB;
 

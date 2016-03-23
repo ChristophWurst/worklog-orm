@@ -27,7 +27,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-public class IntegrationTest {
+public abstract class IntegrationTest {
 	
 	private static DbSetup dbSetup;
 
