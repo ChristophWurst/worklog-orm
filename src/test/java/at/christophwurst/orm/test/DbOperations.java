@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.dao;
+package at.christophwurst.orm.test;
 
 import static com.ninja_squad.dbsetup.Operations.*;
 import com.ninja_squad.dbsetup.operation.Operation;
@@ -28,7 +28,7 @@ public class DbOperations {
 	public static final Operation PREPARE_DB;
 
 	static {
-		Operation clearDb = deleteAllFrom("Address", "Task", "LogbookEntry", "Employee", "Sprint", "Requirement");
+		Operation clearDb = deleteAllFrom("Project_Employee", "Employee", "Address", "Project", "Task", "LogbookEntry", "Sprint", "Requirement");
 		Operation insertAddressData = insertInto("Address")
 			.columns("id", "city", "street", "zipCode")
 			.values(1, "Hollabrunn", "Pfarrgasse", "2020")

@@ -16,29 +16,51 @@
  */
 package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.config.IntegrationalTestsConfig;
+import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.test.IntegrationTest;
+import java.util.Date;
 import javax.inject.Inject;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = IntegrationalTestsConfig.class, loader = AnnotationConfigContextLoader.class)
-public class BurnDownServiceTest extends IntegrationTest {
+public class EmployeeServiceTest extends IntegrationTest {
 
 	@Inject
-	private BurnDownService service;
+	private EmployeeService service;
 
 	@Test
-	public void testGetBurnDownData() {
-		//service.getBurnDownData(1L);
+	public void getAll() {
+		assertEquals(2, service.getAll().size());
+	}
+
+	@Test
+	public void getById() {
+		Employee empl1234 = service.getById(1234L);
+		assertNotNull(empl1234);
+		assertEquals(new Long(1234), empl1234.getId());
+	}
+
+	@Test
+	public void saveNew() {
+		Employee newEmpl = new Employee("Fritz", "Phantom", new Date());
+		service.save(newEmpl);
+
+		assertEquals(3, service.getAll().size());
+	}
+
+	@Test
+	public void updateExisting() {
+		Employee existingEmployee = service.getById(1235L);
+		existingEmployee.setLastName("Huber");
+
+		service.save(existingEmployee);
+
+		Employee fromDb = service.getById(1235L);
+		assertEquals("Huber", fromDb.getLastName());
 	}
 
 }

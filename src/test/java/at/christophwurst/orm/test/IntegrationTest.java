@@ -14,13 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.christophwurst.orm.service;
+package at.christophwurst.orm.test;
 
 import at.christophwurst.orm.config.IntegrationalTestsConfig;
-import at.christophwurst.orm.test.IntegrationTest;
-import javax.inject.Inject;
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.destination.DataSourceDestination;
+import com.ninja_squad.dbsetup.operation.Operation;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -31,14 +37,25 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationalTestsConfig.class, loader = AnnotationConfigContextLoader.class)
-public class BurnDownServiceTest extends IntegrationTest {
+public class IntegrationTest {
+	
+	private static DbSetup dbSetup;
 
-	@Inject
-	private BurnDownService service;
-
-	@Test
-	public void testGetBurnDownData() {
-		//service.getBurnDownData(1L);
+	@BeforeClass
+	public static void setUpClass() {
+		Operation operation = DbOperations.PREPARE_DB;
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("org.apache.derby.jdbc.ClientDriver");
+		dataSource.setUrl("jdbc:derby://localhost/WorkLogDb;create=true");
+		dataSource.setUsername("user");
+		dataSource.setPassword("test");
+		dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);
 	}
 
+	@Before
+	public void setUp() {
+		dbSetup.launch();
+	}
+	
+	
 }
