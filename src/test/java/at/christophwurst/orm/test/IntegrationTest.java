@@ -16,27 +16,17 @@
  */
 package at.christophwurst.orm.test;
 
-import at.christophwurst.orm.config.IntegrationalTestsConfig;
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DataSourceDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = IntegrationalTestsConfig.class, loader = AnnotationConfigContextLoader.class)
 public class IntegrationTest {
 	
 	private static DbSetup dbSetup;

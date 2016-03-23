@@ -16,17 +16,24 @@
  */
 package at.christophwurst.orm.service;
 
+import at.christophwurst.orm.config.IntegrationalTestsConfig;
 import at.christophwurst.orm.domain.Employee;
 import at.christophwurst.orm.test.IntegrationTest;
 import java.util.Date;
 import javax.inject.Inject;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 /**
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = IntegrationalTestsConfig.class, loader = AnnotationConfigContextLoader.class)
 public class EmployeeServiceTest extends IntegrationTest {
 
 	@Inject
