@@ -17,6 +17,7 @@
 package at.christophwurst.orm.service;
 
 import at.christophwurst.orm.dao.SprintRepository;
+import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Sprint;
 import java.util.Date;
 import java.util.Map;

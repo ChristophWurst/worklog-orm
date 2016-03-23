@@ -28,6 +28,10 @@ class EmployeeServiceImpl implements EmployeeService {
 	@Inject
 	private EmployeeRepository employeeRepository;
 
+	public void setEmployeeRepository(EmployeeRepository employeeRepository) {
+		this.employeeRepository = employeeRepository;
+	}
+
 	@Override
 	public List<Employee> getAll() {
 		return employeeRepository.findAll();
