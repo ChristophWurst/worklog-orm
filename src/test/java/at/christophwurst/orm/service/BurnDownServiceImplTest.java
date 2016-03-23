@@ -29,7 +29,6 @@ import static org.mockito.Mockito.*;
  *
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  */
-
 public class BurnDownServiceImplTest {
 
 	private SprintRepository sprintRepository;
@@ -46,7 +45,7 @@ public class BurnDownServiceImplTest {
 	public void testGetBurnDownDataWithNoData() {
 		Sprint s = new Sprint();
 		when(sprintRepository.getSprintAndWorklogs(13L)).thenReturn(s);
-		
+
 		Map<Date, Float> result = service.getBurnDownData(13L);
 		assertEquals(0, result.size());
 	}

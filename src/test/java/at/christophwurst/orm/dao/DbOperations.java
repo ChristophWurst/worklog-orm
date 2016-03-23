@@ -25,31 +25,55 @@ import com.ninja_squad.dbsetup.operation.Operation;
  */
 public class DbOperations {
 
-	public static final Operation PREPARE_DB = sequenceOf(
-		deleteAllFrom("Address", "Task", "LogbookEntry", "Employee", "Sprint", "Requirement"),
-		insertInto("Address")
-		.columns("city", "street", "zipCode")
-		.values("Hollabrunn", "Pfarrgasse", "2020")
-		.values("Schrattenthal", "Obermarkersdorf", "2073")
-		.build(),
-		insertInto("Employee")
-		.columns("id", "dateOfBirth", "firstName", "lastName")
-		.values(1234, "1992-05-06", "John", "Doe")
-		.values(1235, "1992-01-06", "Jane", "Doe")
-		.build(),
-		insertInto("Task")
-		.columns("shortDescription", "estimatedTime")
-		.values("Tsk 1", 3)
-		.values("Tsk 2", 5)
-		.build(),
-		insertInto("Sprint")
-		.columns("id", "nr")
-		.values(1, 1)
-		.values(2, 2)
-		.build(),
-		insertInto("Requirement")
-		.columns("shortDesc")
-		.values("Req 1")
-		.values("Req 2")
-		.build());
+	public static final Operation PREPARE_DB;
+
+	static {
+		Operation clearDb = deleteAllFrom("Address", "Task", "LogbookEntry", "Employee", "Sprint", "Requirement");
+		Operation insertAddressData = insertInto("Address")
+			.columns("id", "city", "street", "zipCode")
+			.values(1, "Hollabrunn", "Pfarrgasse", "2020")
+			.values(2, "Schrattenthal", "Obermarkersdorf", "2073")
+			.build();
+		Operation insertEmployeeData = insertInto("Employee")
+			.columns("id", "dateOfBirth", "firstName", "lastName", "address_id")
+			.values(1234, "1992-05-06", "John", "Doe", 1)
+			.values(1235, "1992-01-06", "Jane", "Doe", 2)
+			.build();
+		Operation insertProjectData = insertInto("Project")
+			.columns("id", "name")
+			.values(100, "Project 1")
+			.values(101, "Project 2")
+			.build();
+		Operation insertProjectEmployeeData = insertInto("Project_Employee")
+			.columns("projects_id", "employees_id")
+			.values(100, 1234)
+			.values(100, 1235)
+			.values(101, 1234)
+			.build();
+		Operation insertTaskData = insertInto("Task")
+			.columns("shortDescription", "estimatedTime")
+			.values("Tsk 1", 3)
+			.values("Tsk 2", 5)
+			.build();
+		Operation insertSprintData = insertInto("Sprint")
+			.columns("id", "nr")
+			.values(1, 1)
+			.values(2, 2)
+			.build();
+		Operation insertRequirementData = insertInto("Requirement")
+			.columns("shortDesc")
+			.values("Req 1")
+			.values("Req 2")
+			.build();
+
+		PREPARE_DB = sequenceOf(
+			clearDb,
+			insertAddressData,
+			insertEmployeeData,
+			insertProjectData,
+			insertProjectEmployeeData,
+			insertTaskData,
+			insertSprintData,
+			insertRequirementData);
+	}
 }

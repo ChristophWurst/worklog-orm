@@ -19,8 +19,10 @@ package at.christophwurst.orm.config;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -32,6 +34,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
  */
 @Configuration
 @EnableAspectJAutoProxy
+@EnableJpaRepositories(basePackages = "at.christophwurst.orm.dao")
+@ComponentScan(basePackages = "at.christophwurst.orm")
 public class IntegrationalTestsConfig {
 
 	@Bean
@@ -62,7 +66,7 @@ public class IntegrationalTestsConfig {
 	private Properties testProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.DerbyTenSevenDialect");
-		properties.put("hibernate.show_sql", "false");
+		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.format_sql", "false");
 		properties.put("hibernate.hbm2ddl.auto", "create");
 		return properties;

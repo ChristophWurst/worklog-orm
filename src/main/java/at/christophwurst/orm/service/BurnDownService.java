@@ -25,6 +25,6 @@ import java.util.Map;
  */
 public interface BurnDownService {
 
-	public Map<Date, Float> getBurnDownData(Long id);
+	public Map<Date, Float> getBurnDownData(Long sprintId);
 
 }
