@@ -52,6 +52,12 @@ public class EmployeeServiceTest extends IntegrationTest {
 	}
 
 	@Test
+	public void getByIdNotFound() {
+		Employee notFound = service.getById(666L);
+		assertNull(notFound);
+	}
+
+	@Test
 	public void saveNew() {
 		Employee newEmpl = new Employee("Fritz", "Phantom", new Date());
 		service.save(newEmpl);

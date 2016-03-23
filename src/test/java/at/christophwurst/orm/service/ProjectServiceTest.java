@@ -22,8 +22,6 @@ import at.christophwurst.orm.domain.Requirement;
 import at.christophwurst.orm.domain.Task;
 import at.christophwurst.orm.test.IntegrationTest;
 import javax.inject.Inject;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
@@ -54,6 +52,12 @@ public class ProjectServiceTest extends IntegrationTest {
 	}
 
 	@Test
+	public void getProjectByIdNotFound() {
+		Project p = service.getProjectById(666L);
+		assertNull(p);
+	}
+
+	@Test
 	public void saveNewProject() {
 		Project p = new Project("Super project");
 		p = service.saveProject(p);
@@ -80,9 +84,21 @@ public class ProjectServiceTest extends IntegrationTest {
 	}
 
 	@Test
+	public void getRequirementByIdNotFound() {
+		Requirement r = service.getRequirementById(666L);
+		assertNull(r);
+	}
+
+	@Test
 	public void getTaskById() {
 		Task t = service.getTaskById(300L);
 		assertNotNull(t);
+	}
+
+	@Test
+	public void getTaskByIdNotFound() {
+		Task t = service.getTaskById(666L);
+		assertNull(t);
 	}
 
 }
