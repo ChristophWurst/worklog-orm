@@ -16,25 +16,40 @@
  */
 package at.christophwurst.orm.service;
 
-import at.christophwurst.orm.domain.Sprint;
-import java.util.List;
 import at.christophwurst.orm.dao.SprintRepository;
-import javax.inject.Inject;
-import org.springframework.stereotype.Component;
+import at.christophwurst.orm.domain.Sprint;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@Component
-class ScrumServiceImpl implements ScrumService {
+/**
+ *
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
+ */
+public class ScrumServiceImplTest {
 
-	@Inject
 	private SprintRepository sprintRepository;
+	private ScrumServiceImpl service;
 
-	public void setSprintRepository(SprintRepository sprintDao) {
-		this.sprintRepository = sprintDao;
+	@Before
+	public void setUp() {
+		sprintRepository = mock(SprintRepository.class);
+		service = new ScrumServiceImpl();
+		service.setSprintRepository(sprintRepository);
 	}
 
-	@Override
-	public List<Sprint> getAllSprints() {
-		return sprintRepository.findAll();
+	@Test
+	public void getAllSprints() {
+		List<Sprint> expected = new ArrayList<>();
+		expected.add(new Sprint());
+		expected.add(new Sprint());
+		when(sprintRepository.findAll()).thenReturn(expected);
+
+		assertSame(expected, service.getAllSprints());
 	}
 
 }
