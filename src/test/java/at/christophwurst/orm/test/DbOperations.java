@@ -28,7 +28,7 @@ public class DbOperations {
 	public static final Operation PREPARE_DB;
 
 	static {
-		Operation clearDb = deleteAllFrom("Project_Employee", "Employee", "Address", "Project", "Task", "LogbookEntry", "Sprint", "Requirement");
+		Operation clearDb = deleteAllFrom("Project_Employee", "Employee", "Address", "Task", "Requirement", "Project", "LogbookEntry", "Sprint");
 		Operation insertAddressData = insertInto("Address")
 			.columns("id", "city", "street", "zipCode")
 			.values(1, "Hollabrunn", "Pfarrgasse", "2020")
@@ -50,20 +50,20 @@ public class DbOperations {
 			.values(100, 1235)
 			.values(101, 1234)
 			.build();
-		Operation insertTaskData = insertInto("Task")
-			.columns("shortDescription", "estimatedTime")
-			.values("Tsk 1", 3)
-			.values("Tsk 2", 5)
-			.build();
 		Operation insertSprintData = insertInto("Sprint")
 			.columns("id", "nr")
 			.values(1, 1)
 			.values(2, 2)
 			.build();
 		Operation insertRequirementData = insertInto("Requirement")
-			.columns("shortDesc")
-			.values("Req 1")
-			.values("Req 2")
+			.columns("id", "shortDesc", "project_id")
+			.values(200, "Req 1", 100)
+			.values(201, "Req 2", 100)
+			.build();
+		Operation insertTaskData = insertInto("Task")
+			.columns("id", "shortDescription", "estimatedTime", "requirement_id")
+			.values(300, "Tsk 1", 3, 200)
+			.values(301, "Tsk 2", 5, 200)
 			.build();
 
 		PREPARE_DB = sequenceOf(
@@ -72,8 +72,8 @@ public class DbOperations {
 			insertEmployeeData,
 			insertProjectData,
 			insertProjectEmployeeData,
-			insertTaskData,
 			insertSprintData,
-			insertRequirementData);
+			insertRequirementData,
+			insertTaskData);
 	}
 }
