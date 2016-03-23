@@ -40,8 +40,16 @@ class ProjectServiceImpl implements ProjectService {
 	@Inject
 	private TaskRepository taskRepository;
 
-	public void setProjectDao(ProjectRepository projectDao) {
-		this.projectRepository = projectDao;
+	public void setProjectRepository(ProjectRepository projectRepository) {
+		this.projectRepository = projectRepository;
+	}
+
+	public void setRequirementRepository(RequirementRepository requirementRepository) {
+		this.requirementRepository = requirementRepository;
+	}
+
+	public void setTaskRepository(TaskRepository taskRepository) {
+		this.taskRepository = taskRepository;
 	}
 
 	@Override
