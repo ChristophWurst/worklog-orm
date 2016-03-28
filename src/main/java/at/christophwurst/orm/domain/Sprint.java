@@ -34,7 +34,7 @@ public class Sprint implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	private Long id;
 	private int nr;
 	@Temporal(javax.persistence.TemporalType.DATE)

@@ -41,10 +41,10 @@ public class AppConfig {
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("org.apache.derby.jdbc.ClientDriver");
-		dataSource.setUrl("jdbc:derby://localhost/WorkLogDb;create=true");
-		dataSource.setUsername("user");
-		dataSource.setPassword("test");
+		dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://localhost/WorkLogDb");
+		dataSource.setUsername("workloguser");
+		dataSource.setPassword("worklogpassword");
 		return dataSource;
 	}
 
@@ -65,10 +65,10 @@ public class AppConfig {
 
 	private Properties testProperties() {
 		Properties properties = new Properties();
-		properties.put("hibernate.dialect", "org.hibernate.dialect.DerbyTenSevenDialect");
+		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
 		properties.put("hibernate.show_sql", "false");
 		properties.put("hibernate.format_sql", "false");
-		properties.put("hibernate.hbm2ddl.auto", "create");
+		properties.put("hibernate.hbm2ddl.auto", "update");
 		return properties;
 	}
 
