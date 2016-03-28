@@ -30,7 +30,7 @@ public class LogbookEntry implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endTime;
 
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, optional = false)
 	private Employee employee;
 
 	@ManyToOne
