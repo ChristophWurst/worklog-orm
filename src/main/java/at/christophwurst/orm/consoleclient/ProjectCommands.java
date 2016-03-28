@@ -71,7 +71,10 @@ public class ProjectCommands {
 			Long employeeId = consoleInterface.getLongValue("employee id");
 
 			Project project = projectService.getProjectById(projectId);
-			Employee employee = employeeService.getById(employeeId);
+			Employee employee = null;
+			if (employeeId != null) {
+				employee = employeeService.getById(employeeId);
+			}
 
 			project.setOwner(employee);
 			projectService.saveProject(project);
@@ -154,7 +157,7 @@ public class ProjectCommands {
 			requirement.addTask(task);
 			projectService.saveRequirement(requirement);
 		});
-		
+
 		client.registerCommand("project:requirement:task:delete", (consoleInterface) -> {
 			Long requirementId = consoleInterface.getLongValue("requirement id");
 			Long taskId = consoleInterface.getLongValue("task id");
